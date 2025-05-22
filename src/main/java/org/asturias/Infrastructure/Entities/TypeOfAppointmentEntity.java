@@ -16,6 +16,10 @@ public class TypeOfAppointmentEntity {
     @Column(length = 255)
     private String description;
 
+
+    public TypeOfAppointmentEntity() {
+    }
+
     public Long getId() {
         return id;
     }

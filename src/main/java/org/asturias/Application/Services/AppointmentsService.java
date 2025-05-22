@@ -1,18 +1,23 @@
 package org.asturias.Application.Services;
 
 import org.asturias.Domain.DTO.Request.AppointmentFormDTO;
+import org.asturias.Domain.DTO.Response.AppointmentDTO;
+import org.asturias.Domain.DTO.Response.CalendarAppointmentDTO;
+import org.asturias.Domain.Enums.StatusAppointment;
 import org.asturias.Domain.Models.Appointments;
 import org.asturias.Domain.Models.Users;
 import org.asturias.Domain.Ports.In.CreateAppointmentAndUser;
 import org.asturias.Domain.Ports.In.CreateEntityUseCase;
 import org.asturias.Domain.Ports.In.RetrieveEntityUseCase;
 import org.asturias.Infrastructure.Mappers.Request.AppointmentFormDtoMapper;
+import org.asturias.Infrastructure.Mappers.Response.CalendarAppointmentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class AppointmentsService  implements CreateEntityUseCase, RetrieveEntityUseCase, CreateAppointmentAndUser {
 
@@ -22,6 +27,9 @@ public class AppointmentsService  implements CreateEntityUseCase, RetrieveEntity
 
     @Autowired
     private AppointmentFormDtoMapper appointmentFormDtoMapper;
+
+    @Autowired
+    private CalendarAppointmentMapper  calendarAppointmentMapper;
 
     public AppointmentsService(CreateEntityUseCase createEntityUseCase, RetrieveEntityUseCase retrieveEntitiesUseCase) {
         this.createEntityUseCase = createEntityUseCase;
@@ -51,7 +59,7 @@ public class AppointmentsService  implements CreateEntityUseCase, RetrieveEntity
     }
 
     @Override
-    public List<Appointments> findByDateAppointmentBetween(LocalDateTime start, LocalDateTime end) {
+    public List<Appointments> findByDateAppointmentBetween(String start, String end) {
         return retrieveEntitiesUseCase.findByDateAppointmentBetween(start, end);
     }
 
@@ -68,4 +76,34 @@ public class AppointmentsService  implements CreateEntityUseCase, RetrieveEntity
         // 5. Persistir la cita en la base de datos
         createAppointments(appointment);
     }
+
+
+
+    @Override
+    public CalendarAppointmentDTO getCalendarAppointmentDTO(String start, String end) {
+        // 1. Consultar directamente los modelos (si tu método ya hace la conversión)
+        List<Appointments> appointmentsModels = findByDateAppointmentBetween(start, end);
+
+        // 2. Validar si la lista está vacía o nula
+        if (appointmentsModels == null || appointmentsModels.isEmpty()) {
+            return null;
+        }
+        // 3. Convertir de Appointments (modelo) a AppointmentDTO
+        List<AppointmentDTO> appointmentDTOs = appointmentsModels.stream()
+                .map(calendarAppointmentMapper::toAppointmentDTO)
+                .toList();
+
+        // 4. Agrupar las citas por su estado y contar cuántas hay de cada uno
+        Map<StatusAppointment, Long> statuses = appointmentsModels.stream()
+                .collect(Collectors.groupingBy(Appointments::getStatus, Collectors.counting()));
+
+        // 5. Construir el DTO completo con la información obtenida
+        return calendarAppointmentMapper.toCalendarAppointmentDTO(
+                appointmentsModels.size(),
+                statuses,
+                appointmentDTOs
+        );
+    }
+
+
 }

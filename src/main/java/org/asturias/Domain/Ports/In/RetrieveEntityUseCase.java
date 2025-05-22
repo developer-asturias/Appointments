@@ -14,5 +14,6 @@ public interface RetrieveEntityUseCase {
 //    Page<Users> getAllUsers(String name, Pageable pageable);
     Optional<Users> getUserById(Long id);
     Optional<Appointments> findAppointmentById (Long id);
-    List<Appointments> findByDateAppointmentBetween(LocalDateTime start, LocalDateTime end);
+    List<Appointments> findByDateAppointmentBetween(String start, String end);
+
 }

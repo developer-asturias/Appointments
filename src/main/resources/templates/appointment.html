@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Citas - Portal Estudiantes</title>
+    <meta name="description" content="Sistema de gestión de citas académicas para estudiantes de Universidad Asturias">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-box {
+            background-color: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .info-icon {
+            color: #d97706;
+            font-size: 1.25rem;
+            margin-top: 0.125rem;
+        }
+
+        .info-content strong {
+            display: block;
+            margin-bottom: 0.25rem;
+            color: #92400e;
+        }
+
+        .info-content p {
+            color: #92400e;
+            font-size: 0.875rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-row.two-cols {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .form-row.search-row {
+            grid-template-columns: 1fr auto;
+            align-items: end;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        button {
+            background-color: #fbbf24;
+            color: #92400e;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.15s ease-in-out;
+            font-size: 0.875rem;
+        }
+
+        button:hover {
+            background-color: #f59e0b;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-full {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+        }
+
+        .appointments-container {
+            min-height: 200px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 1rem;
+            background-color: #f9fafb;
+        }
+
+        .empty-appointments {
+            text-align: center;
+            color: #6b7280;
+            font-style: italic;
+            padding: 2rem;
+        }
+
+        .appointment-item {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .appointment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .appointment-title {
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .appointment-type {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-scheduled {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-completed {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-cancelled {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .notification {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background-color: #10b981;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: translateX(400px);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background-color: #ef4444;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .form-row.two-cols {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row.search-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <h1>Sistema de Citas - Portal Estudiantes</h1>
+
+    <div class="card">
+        <!-- Consultar citas existentes -->
+        <h2 class="section-title">Consultar citas existentes</h2>
+        <div class="form-row search-row">
+            <div class="form-group">
+                <label for="searchDocument">Número de Documento (Cédula)</label>
+                <input type="text" id="searchDocument" placeholder="Número de documento">
+            </div>
+            <button type="button" id="btn-search-document">Consultar Citas</button>
+        </div>
+
+        <!-- Información importante -->
+        <div class="info-box">
+            <div class="info-icon">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="info-content">
+                <strong>Información importante</strong>
+                <p>Por favor verifique que toda la información sea correcta antes de crear la cita. En caso de cancelación, puede usar la opción de búsqueda por número de documento para encontrar y cancelar su cita.</p>
+            </div>
+        </div>
+
+        <!-- Formulario de solicitar cita -->
+        <h2 class="section-title">Solicitar Cita</h2>
+        <form id="appointment-form">
+            <div class="form-row two-cols">
+                <div class="form-group">
+                    <label for="userName">Nombre completo</label>
+                    <input type="text" id="userName" name="userName" required placeholder="Ingresa tu nombre completo">
+                </div>
+                <div class="form-group">
+                    <label for="userEmail">Correo electrónico</label>
+                    <input type="email" id="userEmail" name="userEmail" required placeholder="estudiante@example.com">
+                </div>
+            </div>
+
+            <div class="form-row two-cols">
+                <div class="form-group">
+                    <label for="phone">Teléfono</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="3001234567">
+                </div>
+                <div class="form-group">
+                    <label for="numberDocument">Número de documento</label>
+                    <input type="text" id="numberDocument" name="numberDocument" required placeholder="Número de cédula">
+                </div>
+            </div>
+
+            <div class="form-row two-cols">
+                <div class="form-group">
+                    <label for="programId">Programa académico</label>
+                    <select id="programId" name="programId" required>
+                        <option value="">Seleccione un programa</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="typeOfAppointment">Tipo de cita</label>
+                    <select id="typeOfAppointment" name="typeOfAppointment" required>
+                        <option value="">Seleccione un tipo</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="appointmentName">Nombre de la cita</label>
+                <input type="text" id="appointmentName" name="appointmentName" required placeholder="Describe brevemente el tema de la cita">
+            </div>
+
+            <div class="form-group">
+                <label for="date">Fecha y hora</label>
+                <input type="datetime-local" id="date" name="date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="details">Detalles (opcional)</label>
+                <textarea id="details" name="details" rows="3" placeholder="Describe los detalles específicos de tu cita..."></textarea>
+            </div>
+
+            <button type="submit" class="btn-full" id="submit-btn">Agendar Cita</button>
+        </form>
+    </div>
+
+    <!-- Resultados de búsqueda -->
+    <div class="card" id="search-results-card" style="display: none;">
+        <h2 class="section-title">Resultados de búsqueda</h2>
+        <div id="appointments-container" class="appointments-container">
+            <div class="empty-appointments">Utiliza la búsqueda para ver las citas.</div>
+        </div>
+    </div>
+</div>
+
+<!-- Notificación -->
+<div id="notification" class="notification">
+    <span id="notification-message"></span>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<script src="js/api.js"></script>
+<script>
+    let appointmentTypes = [];
+    let programs = [];
+
+    // Inicializar la aplicación
+    async function init() {
+        await loadFormData();
+        setupEventListeners();
+        setMinDate();
+    }
+
+    // Cargar datos del formulario
+    async function loadFormData() {
+        try {
+            // Cargar tipos de citas
+            appointmentTypes = await API.getAppointmentTypes();
+            const typeSelect = document.getElementById('typeOfAppointment');
+            typeSelect.innerHTML = '<option value="">Seleccione un tipo</option>';
+            appointmentTypes.forEach(type => {
+                const option = document.createElement('option');
+                option.value = type.id;
+                option.textContent = type.name;
+                typeSelect.appendChild(option);
+            });
+
+            // Cargar programas académicos
+            programs = await API.getPrograms();
+            const programSelect = document.getElementById('programId');
+            programSelect.innerHTML = '<option value="">Seleccione un programa</option>';
+            programs.forEach(program => {
+                const option = document.createElement('option');
+                option.value = program.id;
+                option.textContent = program.name;
+                programSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Error al cargar datos del formulario:', error);
+            showNotification('Error al cargar los datos. Por favor, recarga la página.', 'error');
+        }
+    }
+
+    // Configurar event listeners
+    function setupEventListeners() {
+        document.getElementById('appointment-form').addEventListener('submit', handleAppointmentSubmit);
+        document.getElementById('btn-search-document').addEventListener('click', handleDocumentSearch);
+
+        // Search on Enter key
+        document.getElementById('searchDocument').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleDocumentSearch();
+            }
+        });
+    }
+
+    // Establecer fecha mínima (hoy)
+    function setMinDate() {
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const minDate = tomorrow.toISOString().slice(0, 16);
+        document.getElementById('date').min = minDate;
+    }
+
+    // Manejar envío del formulario
+    async function handleAppointmentSubmit(event) {
+        event.preventDefault();
+
+        const submitBtn = document.getElementById('submit-btn');
+        const originalText = submitBtn.textContent;
+
+        // Mostrar estado de carga
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Enviando...';
+
+        try {
+            // Recopilar datos del formulario
+            const formData = {
+                appointmentName: document.getElementById('userName').value,
+                email: document.getElementById('userEmail').value,
+                document: document.getElementById('numberDocument').value,
+                phone: document.getElementById('phone').value,
+                typeOfAppointment: parseInt(document.getElementById('typeOfAppointment').value),
+                program: parseInt(document.getElementById('programId').value),
+                date: new Date(document.getElementById('date').value),
+                details: document.getElementById('details').value || '',
+                status: 'scheduled'
+            };
+
+            // Enviar solicitud
+            await API.createAppointment(formData);
+
+            // Mostrar éxito y limpiar formulario
+            showNotification('¡Cita agendada exitosamente!');
+            document.getElementById('appointment-form').reset();
+            setMinDate();
+
+        } catch (error) {
+            console.error('Error al crear cita:', error);
+            showNotification('Error al crear la cita. Por favor, intenta nuevamente.', 'error');
+        } finally {
+            // Restaurar botón
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+        }
+    }
+
+    // Manejar búsqueda por documento
+    async function handleDocumentSearch() {
+        const document = document.getElementById('searchDocument').value.trim();
+
+        if (!document) {
+            showNotification('Por favor, ingresa un número de documento', 'error');
+            return;
+        }
+
+        try {
+            const appointments = await API.getAppointmentsByDocument(document);
+            displaySearchResults(appointments);
+        } catch (error) {
+            console.error('Error al buscar citas:', error);
+            showNotification('Error al buscar las citas. Por favor, intenta nuevamente.', 'error');
+        }
+    }
+
+    // Mostrar resultados de búsqueda
+    function displaySearchResults(appointments) {
+        const resultsCard = document.getElementById('search-results-card');
+        const container = document.getElementById('appointments-container');
+
+        // Mostrar la tarjeta de resultados
+        resultsCard.style.display = 'block';
+        container.innerHTML = '';
+
+        if (appointments.length === 0) {
+            container.innerHTML = '<div class="empty-appointments">No se encontraron citas para este documento.</div>';
+            return;
+        }
+
+        // Ordenar citas por fecha (más recientes primero)
+        appointments.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        appointments.forEach(appointment => {
+            const appointmentEl = createAppointmentElement(appointment);
+            container.appendChild(appointmentEl);
+        });
+    }
+
+    // Crear elemento de cita
+    function createAppointmentElement(appointment) {
+        const appointmentEl = document.createElement('div');
+        appointmentEl.className = 'appointment-item';
+
+        const appointmentDate = new Date(appointment.date);
+        const formattedDate = appointmentDate.toLocaleDateString('es-ES', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+        const formattedTime = appointmentDate.toLocaleTimeString('es-ES', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        const appointmentTypeName = getAppointmentTypeName(appointment.typeOfAppointment);
+        const programName = getProgramName(appointment.program);
+
+        appointmentEl.innerHTML = `
+            <div class="appointment-header">
+                <div>
+                    <div class="appointment-title">${appointment.appointmentName}</div>
+                    <div class="appointment-type">${appointmentTypeName}</div>
+                </div>
+                <span class="badge badge-${appointment.status}">${getStatusText(appointment.status)}</span>
+            </div>
+            <div style="margin-bottom: 0.5rem;">
+                <strong>Fecha:</strong> ${formattedDate} a las ${formattedTime}
+            </div>
+            <div style="margin-bottom: 0.5rem;">
+                <strong>Programa:</strong> ${programName}
+            </div>
+            <div style="margin-bottom: 0.5rem;">
+                <strong>Email:</strong> ${appointment.email}
+            </div>
+            <div style="margin-bottom: 0.5rem;">
+                <strong>Teléfono:</strong> ${appointment.phone}
+            </div>
+            ${appointment.details ? `<div style="margin-bottom: 0.5rem;"><strong>Detalles:</strong> ${appointment.details}</div>` : ''}
+            ${appointment.teamsLink && appointment.status === 'scheduled' ? `
+                <div style="margin-top: 1rem;">
+                    <a href="${appointment.teamsLink}" target="_blank" style="background-color: #0078d4; color: white; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; display: inline-block;">
+                        Unirse a la reunión
+                    </a>
+                </div>
+            ` : ''}
+            ${appointment.status === 'scheduled' ? `
+                <div style="margin-top: 1rem;">
+                    <button onclick="cancelAppointment(${appointment.id})" style="background-color: #ef4444; color: white;">
+                        Cancelar cita
+                    </button>
+                </div>
+            ` : ''}
+        `;
+
+        return appointmentEl;
+    }
+
+    // Cancelar cita
+    async function cancelAppointment(appointmentId) {
+        if (!confirm('¿Estás seguro de que deseas cancelar esta cita?')) {
+            return;
+        }
+
+        try {
+            await API.updateAppointmentStatus(appointmentId, 'cancelled');
+            showNotification('Cita cancelada exitosamente');
+            // Volver a buscar para actualizar la lista
+            handleDocumentSearch();
+        } catch (error) {
+            console.error('Error al cancelar cita:', error);
+            showNotification('Error al cancelar la cita. Por favor, intenta nuevamente.', 'error');
+        }
+    }
+
+    // Obtener nombre del tipo de cita
+    function getAppointmentTypeName(typeId) {
+        const type = appointmentTypes.find(t => t.id === typeId);
+        return type ? type.name : 'Tipo desconocido';
+    }
+
+    // Obtener nombre del programa
+    function getProgramName(programId) {
+        const program = programs.find(p => p.id === programId);
+        return program ? program.name : 'Programa desconocido';
+    }
+
+    // Obtener texto del estado
+    function getStatusText(status) {
+        const statusMap = {
+            'scheduled': 'Programada',
+            'completed': 'Completada',
+            'cancelled': 'Cancelada'
+        };
+        return statusMap[status] || status;
+    }
+
+    // Mostrar notificación
+    function showNotification(message, type = 'success') {
+        const notification = document.getElementById('notification');
+        const notificationMessage = document.getElementById('notification-message');
+
+        notificationMessage.textContent = message;
+
+        // Cambiar color según el tipo
+        if (type === 'error') {
+            notification.classList.add('error');
+        } else {
+            notification.classList.remove('error');
+        }
+
+        notification.classList.add('show');
+
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    }
+
+    // Inicializar cuando la página se cargue
+    document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

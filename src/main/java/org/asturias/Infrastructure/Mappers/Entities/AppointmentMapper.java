@@ -12,7 +12,7 @@ import org.mapstruct.Mappings;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {UsersMapper.class})
 public interface AppointmentMapper {
 
     @Mappings({
@@ -20,16 +20,21 @@ public interface AppointmentMapper {
             @Mapping(source = "name", target = "name"),
             @Mapping(source = "dateAppointment", target = "dateAppointment"),
             @Mapping(source = "userId", target = "studentId"),
-//            @Mapping(source = "programId", target = "programId"),
-//            @Mapping(source = "teamsLink", target = "teamsLink"),
+            @Mapping(source = "status", target = "status"),
             @Mapping(source = "typeOfAppointmentId", target = "typeOfAppointmentId"),
             @Mapping(source = "details", target = "details"),
+            @Mapping(source = "users", target = "student"),
+            @Mapping(target = "programId", ignore = true),
+            @Mapping(target = "teamsLink", ignore = true)
     })
-    Appointments APPOINTMENTS(AppointmentsEntity appointments);
+    Appointments APPOINTMENTS(AppointmentsEntity appointmentsEntity);
 
-    List<Appointments> APPOINTMENTS_LIST(List<AppointmentsEntity> appointmentsEntities);
+//    List<Appointments> APPOINTMENTS(List<AppointmentsEntity> appointmentsEntities);
 
     @InheritInverseConfiguration
-    AppointmentsEntity  APPOINTMENTS_ENTITY(Appointments appointments);
-
+    @Mappings({
+            @Mapping(source = "studentId", target = "userId"),
+            @Mapping(source = "student", target = "users")
+    })
+    AppointmentsEntity APPOINTMENTS_ENTITY(Appointments appointments);
 }

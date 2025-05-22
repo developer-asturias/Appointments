@@ -16,6 +16,9 @@ public class ProgramEntity {
     private  String name;
 
 
+    public ProgramEntity() {
+    }
+
     public ProgramEntity(Long id, String name) {
         this.id = id;
         this.name = name;

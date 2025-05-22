@@ -34,7 +34,7 @@ public class RetrieveAppointmentsUseCaseImpl implements RetrieveEntityUseCase {
 
 
     @Override
-    public List<Appointments> findByDateAppointmentBetween(LocalDateTime start, LocalDateTime end) {
+    public List<Appointments> findByDateAppointmentBetween(String start, String end) {
         return appointmentsRepositoryPort.findByDateAppointmentBetween(start, end);
     }
 }

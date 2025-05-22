@@ -3,8 +3,8 @@ package org.asturias.Infrastructure.Entities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.*;
 import org.asturias.Domain.Enums.StatusAppointment;
+import org.asturias.Infrastructure.Listener.AppointmentsEntityListener;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Appointment")
+@EntityListeners(AppointmentsEntityListener.class)
 public class AppointmentsEntity {
 
     @Id
@@ -36,8 +37,6 @@ public class AppointmentsEntity {
     @NotNull
     @Column(name = "user_id", nullable = false, updatable = false)
     private Long userId;
-
-
 
     @Enumerated(EnumType.STRING)
     private StatusAppointment status;
@@ -125,13 +124,6 @@ public class AppointmentsEntity {
         this.userId = userId;
     }
 
-//    public String getTeamsLink() {
-//        return teamsLink;
-//    }
-//
-//    public void setTeamsLink(String teamsLink) {
-//        this.teamsLink = teamsLink;
-//    }
 
     public StatusAppointment getStatus() {
         return status;

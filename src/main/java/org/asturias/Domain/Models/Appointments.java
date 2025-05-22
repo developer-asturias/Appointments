@@ -1,9 +1,7 @@
 package org.asturias.Domain.Models;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import org.asturias.Domain.Enums.StatusAppointment;
 
 import java.time.LocalDateTime;
 
@@ -16,30 +14,46 @@ public class Appointments {
     private String name;
     
     private LocalDateTime dateAppointment;
-    
+
     private Long studentId;
 
     private Long programId;
 
     private String teamsLink;
 
+    private StatusAppointment status;
+
     private Long typeOfAppointmentId;
     
     private String details;
 
-    public Appointments(Long id, String name, LocalDateTime dateAppointment, Long studentId, Long programId, String teamsLink, Long typeOfAppointmentId, String details) {
+    private Users student;
+
+
+    public Appointments(Long id, String name, LocalDateTime dateAppointment, Long studentId, Long programId, String teamsLink, StatusAppointment status, Long typeOfAppointmentId, String details, Users student) {
         this.id = id;
         this.name = name;
         this.dateAppointment = dateAppointment;
         this.studentId = studentId;
         this.programId = programId;
         this.teamsLink = teamsLink;
+        this.status = status;
         this.typeOfAppointmentId = typeOfAppointmentId;
         this.details = details;
+        this.student = student;
     }
 
     public Appointments() {
 
+    }
+
+
+    public StatusAppointment getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusAppointment status) {
+        this.status = status;
     }
 
     public Long getId() {
@@ -104,5 +118,13 @@ public class Appointments {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public Users getStudent() {
+        return student;
+    }
+
+    public void setStudent(Users student) {
+        this.student = student;
     }
 }

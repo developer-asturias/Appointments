@@ -11,7 +11,7 @@ public interface AppointmentsRepositoryPort {
     Optional <Appointments> update (Appointments appointments);
     Optional<Appointments> findById (Long id);
     Appointments save (Appointments appointments);
-    List<Appointments> findByDateAppointmentBetween(LocalDateTime start, LocalDateTime end);
+    List<Appointments> findByDateAppointmentBetween(String start, String end);
 
 
 }

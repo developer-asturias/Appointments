@@ -65,6 +65,9 @@ public class UsersEntity {
     private Set<RoleEntity> roles = new HashSet<>();
 
 
+    public UsersEntity() {
+    }
+
     public UsersEntity(Long id, String password, String name, String email, LocalDateTime createAt, LocalDateTime updateAt, LocalDateTime lastLogin, String phone, String numberDocument, ProgramEntity program, Long programId, Set<RoleEntity> roles) {
         this.id = id;
         this.password = password;

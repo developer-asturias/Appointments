@@ -46,7 +46,7 @@ public class AppointmentFormDTO {
 
 //    private String teamsLink;
 
-    @Size(max = 500, message = "Los detalles no pueden superar los 500 caracteres.")
+    @Size(max = 200, message = "Los detalles no pueden superar los 200 caracteres.")
     private String details;
 
 

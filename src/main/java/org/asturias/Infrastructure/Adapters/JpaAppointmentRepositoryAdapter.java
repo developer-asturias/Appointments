@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,8 +53,16 @@ public class JpaAppointmentRepositoryAdapter  implements AppointmentsRepositoryP
     }
 
     @Override
-    public List<Appointments> findByDateAppointmentBetween(LocalDateTime start, LocalDateTime end) {
-        return jpaAppointmentRepository.findByDateAppointmentBetween(start, end)
+    public List<Appointments> findByDateAppointmentBetween(String start, String end) {
+
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+
+        LocalDateTime startDate = LocalDateTime.parse(start, formatter);
+        LocalDateTime endDate = LocalDateTime.parse(end, formatter);
+
+
+        return jpaAppointmentRepository.findByDateAppointmentBetween(startDate, endDate)
                 .stream().map(appointmentMapper::APPOINTMENTS)
                 .toList();
     }
