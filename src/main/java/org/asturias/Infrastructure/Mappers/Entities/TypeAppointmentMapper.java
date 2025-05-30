@@ -1,7 +1,8 @@
 package org.asturias.Infrastructure.Mappers.Entities;
 
-
+import org.asturias.Domain.Models.TypeOfAppointment;
 import org.asturias.Domain.Models.Users;
+import org.asturias.Infrastructure.Entities.TypeOfAppointmentEntity;
 import org.asturias.Infrastructure.Entities.UsersEntity;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
@@ -10,22 +11,18 @@ import org.mapstruct.Mappings;
 
 import java.util.List;
 
+
 @Mapper(componentModel = "spring")
-public interface UsersMapper {
+public interface TypeAppointmentMapper {
 
     @Mappings({
             @Mapping(source = "id", target = "id"),
-            @Mapping(source = "password", target = "password"),
             @Mapping(source = "name", target = "name"),
-            @Mapping(source = "email", target = "email"),
-            @Mapping(source = "numberDocument", target = "numberDocument"),
     })
-    Users USERS(UsersEntity usersEntity);
+    TypeOfAppointment TYPE_OF_APPOINTMENT(TypeOfAppointmentEntity typeOfAppointment);
 
-    List<Users> USERS_LIST(List<UsersEntity> usersEntities);
+    List<TypeOfAppointment> TYPE_OF_APPOINTMENTS(List<TypeOfAppointmentEntity> ofAppointmentEntities);
 
     @InheritInverseConfiguration
-    UsersEntity  USERS_ENTITY(Users users);
-
-
+    TypeOfAppointmentEntity TYPE_OF_APPOINTMENT_ENTITY(TypeOfAppointment users);
 }

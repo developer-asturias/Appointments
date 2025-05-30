@@ -1,34 +1,35 @@
 package org.asturias.Infrastructure.Entities;
 
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-
 
 @Entity
-@Table(name = "Users")
-public class UsersEntity {
+@Table(name = "Students")
+public class StudentsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "password")
-    private String password;
-
-    @NotBlank(message = "el campo NOMBRE  no debe ser nulo")
-    @Column(name = "name", length = 300)
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "last_name")
+    private String lastName;
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "number_document")
+    private String numberDocument;
 
     @Column(name = "create_at")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
@@ -40,32 +41,25 @@ public class UsersEntity {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
     private LocalDateTime updateAt;
 
-    @Column(name = "last_login")
-    private LocalDateTime lastLogin;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "program_id", insertable = false, updatable = false)
+    private ProgramEntity program;
 
-    @Column(name = "number_document")
-    private String numberDocument;
-
-    @ManyToMany
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<RoleEntity> roles = new HashSet<>();
+    @Column(name = "program_id", nullable = false)
+    private Long programId;
 
 
-    public UsersEntity() {
-    }
-
-    public UsersEntity(Long id, String password, String name, String email, LocalDateTime createAt, LocalDateTime updateAt, LocalDateTime lastLogin, String numberDocument, Set<RoleEntity> roles) {
+    public StudentsEntity(Long id, String name, String lastName, String email, String phone, String numberDocument, LocalDateTime createAt, LocalDateTime updateAt, ProgramEntity program, Long programId) {
         this.id = id;
-        this.password = password;
         this.name = name;
+        this.lastName = lastName;
         this.email = email;
+        this.phone = phone;
+        this.numberDocument = numberDocument;
         this.createAt = createAt;
         this.updateAt = updateAt;
-        this.lastLogin = lastLogin;
-        this.numberDocument = numberDocument;
-        this.roles = roles;
+        this.program = program;
+        this.programId = programId;
     }
 
     public Long getId() {
@@ -76,14 +70,6 @@ public class UsersEntity {
         this.id = id;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getName() {
         return name;
     }
@@ -92,12 +78,36 @@ public class UsersEntity {
         this.name = name;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getNumberDocument() {
+        return numberDocument;
+    }
+
+    public void setNumberDocument(String numberDocument) {
+        this.numberDocument = numberDocument;
     }
 
     public LocalDateTime getCreateAt() {
@@ -116,20 +126,19 @@ public class UsersEntity {
         this.updateAt = updateAt;
     }
 
-    public LocalDateTime getLastLogin() {
-        return lastLogin;
+    public ProgramEntity getProgram() {
+        return program;
     }
 
-    public void setLastLogin(LocalDateTime lastLogin) {
-        this.lastLogin = lastLogin;
+    public void setProgram(ProgramEntity program) {
+        this.program = program;
     }
 
-
-    public Set<RoleEntity> getRoles() {
-        return roles;
+    public Long getProgramId() {
+        return programId;
     }
 
-    public void setRoles(Set<RoleEntity> roles) {
-        this.roles = roles;
+    public void setProgramId(Long programId) {
+        this.programId = programId;
     }
 }

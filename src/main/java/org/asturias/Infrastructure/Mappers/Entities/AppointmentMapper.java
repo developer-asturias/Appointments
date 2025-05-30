@@ -2,9 +2,7 @@ package org.asturias.Infrastructure.Mappers.Entities;
 
 
 import org.asturias.Domain.Models.Appointments;
-import org.asturias.Domain.Models.Users;
 import org.asturias.Infrastructure.Entities.AppointmentsEntity;
-import org.asturias.Infrastructure.Entities.UsersEntity;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,7 +10,7 @@ import org.mapstruct.Mappings;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {UsersMapper.class})
+@Mapper(componentModel = "spring", uses = {StudentsMapper.class})
 public interface AppointmentMapper {
 
     @Mappings({

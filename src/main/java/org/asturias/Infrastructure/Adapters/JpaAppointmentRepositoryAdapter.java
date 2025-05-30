@@ -1,11 +1,15 @@
 package org.asturias.Infrastructure.Adapters;
 
 
+import org.asturias.Domain.DTO.Response.DetailsAppointmentDTO;
 import org.asturias.Domain.Models.Appointments;
+import org.asturias.Domain.Models.Schedule;
+import org.asturias.Domain.Models.Users;
 import org.asturias.Domain.Ports.Out.AppointmentsRepositoryPort;
 import org.asturias.Infrastructure.Entities.AppointmentsEntity;
 import org.asturias.Infrastructure.Entities.UsersEntity;
 import org.asturias.Infrastructure.Mappers.Entities.AppointmentMapper;
+import org.asturias.Infrastructure.Mappers.Response.DetailsAppointmentMapper;
 import org.asturias.Infrastructure.Repositories.JpaAppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,6 +28,10 @@ public class JpaAppointmentRepositoryAdapter  implements AppointmentsRepositoryP
 
     @Autowired
     private AppointmentMapper   appointmentMapper;
+
+    @Autowired
+    private DetailsAppointmentMapper detailsAppointmentMapper;
+
 
 
     public JpaAppointmentRepositoryAdapter(JpaAppointmentRepository jpaAppointmentRepository, AppointmentMapper appointmentMapper) {
@@ -66,5 +74,32 @@ public class JpaAppointmentRepositoryAdapter  implements AppointmentsRepositoryP
                 .stream().map(appointmentMapper::APPOINTMENTS)
                 .toList();
     }
+
+    @Override
+    public Optional<DetailsAppointmentDTO> findDetailsAppointmentById(Long id) {
+        // 1. Obtener el modelo Appointment por su ID
+        Optional<Appointments> appointmentOpt = findById(id);
+
+        // 2. Si no existe la cita, retornar Optional vacío
+        if (appointmentOpt.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Appointments appointment = appointmentOpt.get();
+
+        // 3. Obtener el usuario asociado a la cita
+        Users user = appointment.getStudent();
+        if (user == null) {
+            return Optional.empty(); // No se puede crear el DTO sin usuario
+        }
+
+        // 4. Mapear la información al DTO utilizando el mapper
+        DetailsAppointmentDTO detailsDTO = detailsAppointmentMapper.toDetailsAppointmentDTO(appointment, user);
+
+        // 5. Retornar el DTO dentro de un Optional
+        return Optional.of(detailsDTO);
+    }
+
+
 
 }

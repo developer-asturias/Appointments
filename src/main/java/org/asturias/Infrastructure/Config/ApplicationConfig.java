@@ -4,8 +4,7 @@ package org.asturias.Infrastructure.Config;
 import org.asturias.Application.Services.AppointmentsService;
 import org.asturias.Application.UseCases.CreateAppointmentsUseCaseImpl;
 import org.asturias.Application.UseCases.RetrieveAppointmentsUseCaseImpl;
-import org.asturias.Domain.Ports.Out.AppointmentsRepositoryPort;
-import org.asturias.Domain.Ports.Out.UsersRepositoryPort;
+import org.asturias.Domain.Ports.Out.*;
 import org.asturias.Infrastructure.Adapters.JpaAppointmentRepositoryAdapter;
 import org.asturias.Infrastructure.Adapters.JpaUsersRepositoryAdapter;
 import org.asturias.Infrastructure.Repositories.JpaUsersRepository;
@@ -24,11 +23,15 @@ public class ApplicationConfig {
 
     @Bean
     public AppointmentsService appointmentsService( AppointmentsRepositoryPort appointmentsRepositoryPort,
-                                                  UsersRepositoryPort usersRepositoryPort
+                                                  UsersRepositoryPort usersRepositoryPort,
+                                                    ProgramRepositoryPort programRepositoryPort,
+                                                    TypeOfAppointmentRepositoryPort typeOfAppointmentRepositoryPort,
+                                                    StudentsRepositoryPort studentsRepositoryPort,
+                                                    ScheduleRepositoryPort scheduleRepositoryPort
     ) {
         return new AppointmentsService(
-                new CreateAppointmentsUseCaseImpl(appointmentsRepositoryPort, usersRepositoryPort ),
-                new RetrieveAppointmentsUseCaseImpl(appointmentsRepositoryPort, usersRepositoryPort)
+                new CreateAppointmentsUseCaseImpl(appointmentsRepositoryPort, usersRepositoryPort,studentsRepositoryPort ),
+                new RetrieveAppointmentsUseCaseImpl(appointmentsRepositoryPort, usersRepositoryPort, programRepositoryPort, typeOfAppointmentRepositoryPort, studentsRepositoryPort, scheduleRepositoryPort)
         );
     }
 

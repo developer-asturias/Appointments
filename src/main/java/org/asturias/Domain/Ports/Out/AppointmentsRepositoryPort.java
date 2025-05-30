@@ -1,6 +1,8 @@
 package org.asturias.Domain.Ports.Out;
 
+import org.asturias.Domain.DTO.Response.DetailsAppointmentDTO;
 import org.asturias.Domain.Models.Appointments;
+import org.asturias.Domain.Models.Schedule;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,6 +14,8 @@ public interface AppointmentsRepositoryPort {
     Optional<Appointments> findById (Long id);
     Appointments save (Appointments appointments);
     List<Appointments> findByDateAppointmentBetween(String start, String end);
+    Optional<DetailsAppointmentDTO>  findDetailsAppointmentById (Long id);
+
 
 
 }

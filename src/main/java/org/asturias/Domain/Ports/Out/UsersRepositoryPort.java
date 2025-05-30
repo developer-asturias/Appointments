@@ -9,4 +9,5 @@ public interface UsersRepositoryPort {
 
     Optional<Users> findById (Long id);
     Users save (Users users);
+    Optional <Users> update (Users users);
 }

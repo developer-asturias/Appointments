@@ -1,7 +1,7 @@
 package org.asturias.Domain.Ports.In;
 
-import org.asturias.Domain.Models.Appointments;
-import org.asturias.Domain.Models.Users;
+import org.asturias.Domain.DTO.Response.DetailsAppointmentDTO;
+import org.asturias.Domain.Models.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -15,5 +15,13 @@ public interface RetrieveEntityUseCase {
     Optional<Users> getUserById(Long id);
     Optional<Appointments> findAppointmentById (Long id);
     List<Appointments> findByDateAppointmentBetween(String start, String end);
+    Optional<DetailsAppointmentDTO> findDetailsAppointmentById(Long id);
+    List<Program> FindAllProgram ();
+    List<TypeOfAppointment> FindAllTypeAppointment();
+    Optional<Students> getStudentById(Long id);
+    List<Schedule> FindAllSchedule();
+    Optional<Schedule> getScheduleById(Long id);
+
+
 
 }

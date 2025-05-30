@@ -1,20 +1,13 @@
 package org.asturias.Domain.DTO.Request;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
 import java.time.LocalDateTime;
 import jakarta.validation.constraints.Size;
 
 
 public class AppointmentFormDTO {
-
-//    @NotNull(message = "El ID del usuario no puede ser nulo.")
 
     private Long userId;
 
@@ -38,22 +31,21 @@ public class AppointmentFormDTO {
     @NotNull(message = "La fecha de la cita no puede ser nula.")
     private LocalDateTime date;
 
-    @NotBlank(message = "El nombre de la cita no puede estar vacío.")
-    private String appointmentName;
 
     @NotNull(message = "El tipo de cita no puede ser nulo.")
     private Long typeOfAppointmentId;
 
-//    private String teamsLink;
 
     @Size(max = 200, message = "Los detalles no pueden superar los 200 caracteres.")
     private String details;
 
-
+    private Boolean
 
     public AppointmentFormDTO() {
     }
-    public AppointmentFormDTO(Long userId, String userName, String userEmail, String phone, Long programId, String numberDocument, LocalDateTime date, String appointmentName, Long typeOfAppointmentId, String details) {
+
+
+    public AppointmentFormDTO(Long userId, String userName, String userEmail, String phone, Long programId, String numberDocument, LocalDateTime date, Long typeOfAppointmentId, String details) {
         this.userId = userId;
         this.userName = userName;
         this.userEmail = userEmail;
@@ -61,7 +53,6 @@ public class AppointmentFormDTO {
         this.programId = programId;
         this.numberDocument = numberDocument;
         this.date = date;
-        this.appointmentName = appointmentName;
         this.typeOfAppointmentId = typeOfAppointmentId;
         this.details = details;
     }
@@ -122,13 +113,6 @@ public class AppointmentFormDTO {
         this.date = date;
     }
 
-    public String getAppointmentName() {
-        return appointmentName;
-    }
-
-    public void setAppointmentName(String appointmentName) {
-        this.appointmentName = appointmentName;
-    }
 
     public Long getTypeOfAppointmentId() {
         return typeOfAppointmentId;

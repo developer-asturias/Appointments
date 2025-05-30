@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: APPOINMENTSASTURIAS
+  banner:
+    location: classpath:Banner.txt
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: ${DATABASE_PASSWORD:qvvl$+~~naqk}
+    url: ${DATABASE_URL:jdbc:postgresql://64.202.190.113:5432/redsummalab_appointments}
+    username: ${DATABASE_USERNAME:redsummalab_AsturiasAdmin}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+      show-sql: true
+#
+#
+#task:
+#  schedule: "0 0 0 * * *"
+#
+#bezkoder:
+#  app:
+#
+#    jwtExpirationMs: '30000'
+#    jwtCookieName: bezkoder
+#    jwtSecret: YLDSiT3WiKnOxkiTyqln5xeeiWGsAfw+TJ9fM29DnV0=
+#
+
+server:
+  port : 8080
+
+#logging:
+#  level:
+#    org:
+#      asturias:
+#        iepsections: DEBUG
+
