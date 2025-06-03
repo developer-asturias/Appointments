@@ -9,7 +9,7 @@ public class AppointmentsEntityListener {
     @PrePersist
     public void prePersist(AppointmentsEntity entity) {
         if (entity.getStatus() == null) {
-            entity.setStatus(StatusAppointment.ACTIVE);
+            entity.setStatus(StatusAppointment.PENDING);
         }
     }
 

@@ -6,10 +6,13 @@ import org.asturias.Infrastructure.Entities.ScheduleEntity;
 import org.asturias.Infrastructure.Mappers.Entities.ScheduleMapper;
 import org.asturias.Infrastructure.Repositories.JpaScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
+
+@Component
 public class JpaScheduleRepositoryAdapter  implements ScheduleRepositoryPort {
 
 

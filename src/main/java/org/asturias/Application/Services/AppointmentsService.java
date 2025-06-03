@@ -4,6 +4,7 @@ import org.asturias.Domain.DTO.Request.AppointmentFormDTO;
 import org.asturias.Domain.DTO.Response.AppointmentDTO;
 import org.asturias.Domain.DTO.Response.CalendarAppointmentDTO;
 import org.asturias.Domain.DTO.Response.DetailsAppointmentDTO;
+import org.asturias.Domain.DTO.Response.ResponseAppointmentDTO;
 import org.asturias.Domain.Enums.StatusAppointment;
 import org.asturias.Domain.Models.*;
 import org.asturias.Domain.Ports.In.CreateAppointmentAndUser;
@@ -13,7 +14,7 @@ import org.asturias.Domain.Ports.In.UpdateEntityUseCase;
 import org.asturias.Infrastructure.Mappers.Request.AppointmentFormDtoMapper;
 import org.asturias.Infrastructure.Mappers.Response.CalendarAppointmentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.http.ResponseEntity;
 
 
 import java.util.List;
@@ -131,17 +132,24 @@ public class AppointmentsService  implements CreateEntityUseCase, RetrieveEntity
 
 
     @Override
-    public void createAppointmentAndUser(AppointmentFormDTO formDTO) {
+    public ResponseAppointmentDTO createAppointmentAndUser(AppointmentFormDTO formDTO) {
         // 1. Convertir el DTO en un objeto de dominio Users
-        Users user = appointmentFormDtoMapper.mapToUsers(formDTO);
+        Students students = appointmentFormDtoMapper.mapToUsers(formDTO);
         // 2. Persistir al usuario para obtener el usuario guardado con ID asignado
-        Users savedUser = createUsers(user);
+        Students savedUser = createStudents(students);
         // 3. Convertir el DTO en un objeto de dominio Appointments
         Appointments appointment = appointmentFormDtoMapper.mapToAppointments(formDTO);
         // 4. Asignar el ID del usuario al objeto de dominio Appointments
         appointment.setStudentId(savedUser.getId());
         // 5. Persistir la cita en la base de datos
-        createAppointments(appointment);
+        Appointments appointments = createAppointments(appointment);
+
+        ResponseAppointmentDTO responseAppointmentDTO = new ResponseAppointmentDTO();
+        responseAppointmentDTO.setNameStudent(savedUser.getName());
+        responseAppointmentDTO.setDate(appointments.getDateAppointment());
+        responseAppointmentDTO.setUserEmail(savedUser.getEmail());
+
+        return responseAppointmentDTO;
     }
 
 

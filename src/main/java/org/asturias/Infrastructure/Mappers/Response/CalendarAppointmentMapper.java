@@ -21,7 +21,7 @@ public interface CalendarAppointmentMapper {
     // Mapear un modelo Appointments a AppointmentDTO
     @Mappings({
             @Mapping(target = "id", source = "id"),
-            @Mapping(target = "name", source = "name"),
+//            @Mapping(target = "name", source = "name"),
             @Mapping(target = "dateAppointment", source = "dateAppointment"),
             @Mapping(target = "details", source = "details"),
             @Mapping(target = "student", source = "student"), // Mapear Users a UserDTO

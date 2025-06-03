@@ -5,8 +5,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+import org.asturias.Infrastructure.Validation.AsturiasEmail;
 
 
+@Setter
+@Getter
 public class AppointmentFormDTO {
 
     private Long userId;
@@ -17,7 +22,9 @@ public class AppointmentFormDTO {
 
     @NotBlank(message = "El correo electrónico del usuario no puede estar vacío.")
     @Email(message = "El correo electrónico debe tener un formato válido.")
+    @AsturiasEmail(message = "El correo electrónico debe pertenecer al dominio @asturias.edu.co")
     private String userEmail;
+
 
     @NotBlank(message = "El número de teléfono del usuario no puede estar vacío.")
     @Size(min = 10, max = 15, message = "El teléfono debe tener entre 10 y 15 caracteres.")
@@ -31,15 +38,12 @@ public class AppointmentFormDTO {
     @NotNull(message = "La fecha de la cita no puede ser nula.")
     private LocalDateTime date;
 
-
     @NotNull(message = "El tipo de cita no puede ser nulo.")
     private Long typeOfAppointmentId;
-
 
     @Size(max = 200, message = "Los detalles no pueden superar los 200 caracteres.")
     private String details;
 
-    private Boolean
 
     public AppointmentFormDTO() {
     }
@@ -57,76 +61,5 @@ public class AppointmentFormDTO {
         this.details = details;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public Long getProgramId() {
-        return programId;
-    }
-
-    public void setProgramId(Long programId) {
-        this.programId = programId;
-    }
-
-    public String getNumberDocument() {
-        return numberDocument;
-    }
-
-    public void setNumberDocument(String numberDocument) {
-        this.numberDocument = numberDocument;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-
-    public Long getTypeOfAppointmentId() {
-        return typeOfAppointmentId;
-    }
-
-    public void setTypeOfAppointmentId(Long typeOfAppointmentId) {
-        this.typeOfAppointmentId = typeOfAppointmentId;
-    }
-
-    public String getDetails() {
-        return details;
-    }
-
-    public void setDetails(String details) {
-        this.details = details;
-    }
 }

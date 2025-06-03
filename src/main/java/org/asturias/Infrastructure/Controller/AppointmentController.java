@@ -6,11 +6,9 @@ import org.asturias.Application.Services.AppointmentsService;
 import org.asturias.Domain.DTO.Request.AppointmentFormDTO;
 import org.asturias.Domain.DTO.Response.CalendarAppointmentDTO;
 import org.asturias.Domain.DTO.Response.DetailsAppointmentDTO;
+import org.asturias.Domain.DTO.Response.ResponseAppointmentDTO;
 import org.asturias.Domain.Enums.StatusAppointment;
-import org.asturias.Domain.Models.Appointments;
-import org.asturias.Domain.Models.Program;
-import org.asturias.Domain.Models.TypeOfAppointment;
-import org.asturias.Domain.Models.Users;
+import org.asturias.Domain.Models.*;
 import org.asturias.Infrastructure.Mappers.Response.CalendarAppointmentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,24 +28,19 @@ import java.util.stream.Collectors;
 public class AppointmentController {
 
 
-    private final CalendarAppointmentMapper calendarAppointmentMapper;
-
-    @Autowired
-    public AppointmentController(CalendarAppointmentMapper calendarAppointmentMapper) {
-        this.calendarAppointmentMapper = calendarAppointmentMapper;
-    }
-
     @Autowired
     private AppointmentsService appointmentsService;
 
 
     // crear una cita
-    @PostMapping("/create")
-    public ResponseEntity<Map<String, String>> createAppointment(@Valid @RequestBody AppointmentFormDTO formDTO) {
-        appointmentsService.createAppointmentAndUser(formDTO);
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "¡Cita registrada con éxito!");
-        return ResponseEntity.ok(response);
+    @PostMapping(value = "/create", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE})
+    public ResponseEntity<?> createAppointment(@Valid @RequestBody AppointmentFormDTO formDTO ) {
+        try {
+            ResponseAppointmentDTO responseAppointmentDTO = appointmentsService.createAppointmentAndUser(formDTO);
+            return new ResponseEntity<>(responseAppointmentDTO, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al establecer un horario: " + e.getMessage());
+        }
     }
 
 
@@ -79,42 +72,6 @@ public class AppointmentController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("No se encontró la cita con ID: " + id);
-        }
-    }
-
-
-    @GetMapping(value = "/types", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getAllAppointmentTypes() {
-        try {
-            List<TypeOfAppointment> appointmentTypes = appointmentsService.FindAllTypeAppointment();
-
-            if (appointmentTypes == null || appointmentTypes.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                        .body("No se encontraron tipos de citas registrados");
-            }
-
-            return ResponseEntity.ok(appointmentTypes);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al obtener los tipos de citas: " + e.getMessage());
-        }
-    }
-
-
-    @GetMapping(value = "/programs", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getAllPrograms() {
-        try {
-            List<Program> programs = appointmentsService.FindAllProgram();
-
-            if (programs == null || programs.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                        .body("No se encontraron programas registrados");
-            }
-
-            return ResponseEntity.ok(programs);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al obtener los programas: " + e.getMessage());
         }
     }
 

@@ -15,24 +15,20 @@ public interface AppointmentMapper {
 
     @Mappings({
             @Mapping(source = "id", target = "id"),
-            @Mapping(source = "name", target = "name"),
             @Mapping(source = "dateAppointment", target = "dateAppointment"),
-            @Mapping(source = "userId", target = "studentId"),
+            @Mapping(source = "studentId", target = "studentId"),
             @Mapping(source = "status", target = "status"),
             @Mapping(source = "typeOfAppointmentId", target = "typeOfAppointmentId"),
             @Mapping(source = "details", target = "details"),
-            @Mapping(source = "users", target = "student"),
+            @Mapping(source = "students", target = "student"),
             @Mapping(target = "programId", ignore = true),
-            @Mapping(target = "teamsLink", ignore = true)
     })
     Appointments APPOINTMENTS(AppointmentsEntity appointmentsEntity);
 
-//    List<Appointments> APPOINTMENTS(List<AppointmentsEntity> appointmentsEntities);
-
     @InheritInverseConfiguration
     @Mappings({
-            @Mapping(source = "studentId", target = "userId"),
-            @Mapping(source = "student", target = "users")
+            @Mapping(source = "studentId", target = "studentId"),
+            @Mapping(source = "student", target = "students")
     })
     AppointmentsEntity APPOINTMENTS_ENTITY(Appointments appointments);
 }

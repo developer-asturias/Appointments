@@ -18,7 +18,7 @@ public interface ScheduleMapper {
             @Mapping(source = "dayOfWeek", target = "dayOfWeek"),
             @Mapping(source = "startTime", target = "startTime"),
             @Mapping(source = "endTime", target = "endTime"),
-            @Mapping(source = "isActive", target = "isActive"),
+            @Mapping(source = "active", target = "active"),
 
     })
     Schedule SCHEDULE(ScheduleEntity schedule);

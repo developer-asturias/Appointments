@@ -1,8 +1,10 @@
 package org.asturias.Infrastructure.Adapters;
 
 
+import org.asturias.Domain.Models.Students;
 import org.asturias.Domain.Models.Users;
 import org.asturias.Domain.Ports.Out.UsersRepositoryPort;
+import org.asturias.Infrastructure.Entities.StudentsEntity;
 import org.asturias.Infrastructure.Entities.UsersEntity;
 import org.asturias.Infrastructure.Mappers.Entities.UsersMapper;
 import org.asturias.Infrastructure.Repositories.JpaUsersRepository;
@@ -37,4 +39,15 @@ public class JpaUsersRepositoryAdapter implements UsersRepositoryPort {
         UsersEntity usersEntity = usersMapper.USERS_ENTITY(users);
         return usersMapper.USERS(usersRepository.save(usersEntity));
     }
+
+    @Override
+    public Optional<Users> update(Users users) {
+        if (usersRepository.existsById(users.getId())) {
+            UsersEntity usersEntity = usersMapper.USERS_ENTITY(users);
+            UsersEntity userUpdate = usersRepository.save(usersEntity);
+            return Optional.of(usersMapper.USERS(userUpdate));
+        }
+        return Optional.empty();
+    }
+
 }

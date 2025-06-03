@@ -1,8 +1,8 @@
 spring:
   application:
     name: APPOINMENTSASTURIAS
-  profiles:
-    active: prod
+#  profiles:
+#    active: prod
 #  banner:
 #    location: classpath:Banner.txt
 

@@ -78,26 +78,27 @@ public class JpaAppointmentRepositoryAdapter  implements AppointmentsRepositoryP
     @Override
     public Optional<DetailsAppointmentDTO> findDetailsAppointmentById(Long id) {
         // 1. Obtener el modelo Appointment por su ID
-        Optional<Appointments> appointmentOpt = findById(id);
-
-        // 2. Si no existe la cita, retornar Optional vacío
-        if (appointmentOpt.isEmpty()) {
-            return Optional.empty();
-        }
-
-        Appointments appointment = appointmentOpt.get();
-
-        // 3. Obtener el usuario asociado a la cita
-        Users user = appointment.getStudent();
-        if (user == null) {
-            return Optional.empty(); // No se puede crear el DTO sin usuario
-        }
+//        Optional<Appointments> appointmentOpt = findById(id);
+//
+//        // 2. Si no existe la cita, retornar Optional vacío
+//        if (appointmentOpt.isEmpty()) {
+//            return Optional.empty();
+//        }
+//
+//        Appointments appointment = appointmentOpt.get();
+//
+//        // 3. Obtener el usuario asociado a la cita
+//        Users user = appointment.getStudent();
+//        if (user == null) {
+//            return Optional.empty(); // No se puede crear el DTO sin usuario
+//        }
 
         // 4. Mapear la información al DTO utilizando el mapper
-        DetailsAppointmentDTO detailsDTO = detailsAppointmentMapper.toDetailsAppointmentDTO(appointment, user);
+//        DetailsAppointmentDTO detailsDTO = detailsAppointmentMapper.toDetailsAppointmentDTO(appointment, user);
 
         // 5. Retornar el DTO dentro de un Optional
-        return Optional.of(detailsDTO);
+//        return Optional.of(detailsDTO);
+        return Optional.empty();
     }
 
 

@@ -3,6 +3,7 @@ package org.asturias.Infrastructure.Mappers.Request;
 
 import org.asturias.Domain.DTO.Request.AppointmentFormDTO;
 import org.asturias.Domain.Models.Appointments;
+import org.asturias.Domain.Models.Students;
 import org.asturias.Domain.Models.Users;
 import org.asturias.Infrastructure.Entities.AppointmentsEntity;
 import org.asturias.Infrastructure.Entities.UsersEntity;
@@ -18,7 +19,6 @@ public interface AppointmentFormDtoMapper {
 
     // Mapear el DTO hacia el modelo Appointments
     @Mappings({
-                @Mapping(source = "appointmentName", target = "name"),
                 @Mapping(source = "date", target = "dateAppointment"),
                 @Mapping(source = "userId", target = "studentId"),
                 @Mapping(source = "typeOfAppointmentId", target = "typeOfAppointmentId"),
@@ -34,14 +34,7 @@ public interface AppointmentFormDtoMapper {
                 @Mapping(source = "programId", target = "programId"),
                 @Mapping(source = "numberDocument", target = "numberDocument")
         })
-        Users mapToUsers(AppointmentFormDTO appointmentFormDTO);
+        Students mapToUsers(AppointmentFormDTO appointmentFormDTO);
 
-//        // Convertir el modelo de dominio Appointments a la entidad para JPA
-//        @InheritInverseConfiguration(name = "mapToAppointments")
-//        AppointmentsEntity mapToAppointmentsEntity(Appointments appointments);
-//
-//        // Convertir el modelo de dominio Users a la entidad para JPA
-//        @InheritInverseConfiguration(name = "mapToUsers")
-//        UsersEntity mapToUsersEntity(Users users);
     }
 
