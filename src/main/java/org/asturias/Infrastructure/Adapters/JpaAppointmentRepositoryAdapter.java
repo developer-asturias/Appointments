@@ -2,6 +2,7 @@ package org.asturias.Infrastructure.Adapters;
 
 
 import org.asturias.Domain.DTO.Response.DetailsAppointmentDTO;
+import org.asturias.Domain.Enums.StatusAppointment;
 import org.asturias.Domain.Models.Appointments;
 import org.asturias.Domain.Models.Schedule;
 import org.asturias.Domain.Models.Users;
@@ -12,6 +13,8 @@ import org.asturias.Infrastructure.Mappers.Entities.AppointmentMapper;
 import org.asturias.Infrastructure.Mappers.Response.DetailsAppointmentMapper;
 import org.asturias.Infrastructure.Repositories.JpaAppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -62,14 +65,9 @@ public class JpaAppointmentRepositoryAdapter  implements AppointmentsRepositoryP
 
     @Override
     public List<Appointments> findByDateAppointmentBetween(String start, String end) {
-
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
-
         LocalDateTime startDate = LocalDateTime.parse(start, formatter);
         LocalDateTime endDate = LocalDateTime.parse(end, formatter);
-
-
         return jpaAppointmentRepository.findByDateAppointmentBetween(startDate, endDate)
                 .stream().map(appointmentMapper::APPOINTMENTS)
                 .toList();
@@ -101,6 +99,33 @@ public class JpaAppointmentRepositoryAdapter  implements AppointmentsRepositoryP
         return Optional.empty();
     }
 
+    @Override
+    public List<Appointments> findAppointmentsByStudentsId(Long studentId) {
+        return jpaAppointmentRepository.findByStudentId(studentId).stream().map(appointmentMapper::APPOINTMENTS).toList();
+    }
 
+    @Override
+    public Page<Appointments> findAllPageable(StatusAppointment status, Pageable pageable) {
+        Page<AppointmentsEntity> appointmentsEntities = jpaAppointmentRepository.findByStatusNot(StatusAppointment.DELETED, pageable);
+
+        return appointmentsEntities.map(entity -> appointmentMapper.APPOINTMENTS(entity));
+    }
+
+//
+//    @Override
+//    public Page<Appointments> findAllPageable(StatusAppointment status, Pageable pageable) {
+//        // Asumiendo que quieres filtrar por un status Y excluir DELETED
+//        Page<AppointmentsEntity> appointmentsEntities;
+//
+//        if (status != null) {
+//            // Filtra por status específico y excluye DELETED
+//            appointmentsEntities = jpaAppointmentRepository.findByStatusAndStatusNot(status, StatusAppointment.DELETED, pageable);
+//        } else {
+//            // Solo excluye DELETED
+//            appointmentsEntities = jpaAppointmentRepository.findByStatusNot(StatusAppointment.DELETED, pageable);
+//        }
+//
+//        return appointmentsEntities.map(entity -> appointmentMapper.APPOINTMENTS(entity));
+//    }
 
 }

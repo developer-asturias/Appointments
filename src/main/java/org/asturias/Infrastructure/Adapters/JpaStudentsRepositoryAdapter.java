@@ -9,6 +9,8 @@ import org.asturias.Infrastructure.Repositories.JpaStudentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -46,6 +48,18 @@ public class JpaStudentsRepositoryAdapter  implements StudentsRepositoryPort {
     @Override
     public Optional<Students> findById(Long id) {
         return jpaStudentsRepository.findById(id).map(studentsEntity -> studentsMapper.STUDENTS(studentsEntity));
+    }
+
+    @Override
+    public Optional<Students> findByEmailAndNumberDocument(String email, String identificationNumber) {
+        if (jpaStudentsRepository.existsByEmailAndNumberDocument(email, identificationNumber)) {
+            Optional <StudentsEntity> studentsEntities = jpaStudentsRepository.findByEmailAndNumberDocument(email, identificationNumber);
+
+            if(studentsEntities.isPresent()){
+                return studentsEntities.map(studentsMapper::STUDENTS);
+            }
+        }
+        return Optional.empty();
     }
 
 }

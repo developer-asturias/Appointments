@@ -1,9 +1,11 @@
 package org.asturias.Infrastructure.Config;
 
 
+import org.asturias.Application.Email.MailBuilder;
 import org.asturias.Application.Services.AppointmentsService;
 import org.asturias.Application.UseCases.CreateAppointmentsUseCaseImpl;
 import org.asturias.Application.UseCases.RetrieveAppointmentsUseCaseImpl;
+import org.asturias.Application.UseCases.SendEmailUseCaseImpl;
 import org.asturias.Application.UseCases.UpdateAppointmentUseCaseImpl;
 import org.asturias.Domain.Ports.Out.*;
 import org.asturias.Infrastructure.Adapters.JpaAppointmentRepositoryAdapter;
@@ -28,12 +30,17 @@ public class ApplicationConfig {
                                                     ProgramRepositoryPort programRepositoryPort,
                                                     TypeOfAppointmentRepositoryPort typeOfAppointmentRepositoryPort,
                                                     StudentsRepositoryPort studentsRepositoryPort,
-                                                    ScheduleRepositoryPort scheduleRepositoryPort
+                                                    ScheduleRepositoryPort scheduleRepositoryPort,
+                                                    SearchAppointmentPort searchAppointmentPort,
+                                                    SendEmailPort sendEmailPort
+
+
     ) {
         return new AppointmentsService(
                 new CreateAppointmentsUseCaseImpl(appointmentsRepositoryPort, usersRepositoryPort,studentsRepositoryPort, scheduleRepositoryPort),
-                new RetrieveAppointmentsUseCaseImpl(appointmentsRepositoryPort, usersRepositoryPort, programRepositoryPort, typeOfAppointmentRepositoryPort, studentsRepositoryPort, scheduleRepositoryPort),
-                new UpdateAppointmentUseCaseImpl(appointmentsRepositoryPort, usersRepositoryPort, scheduleRepositoryPort)
+                new RetrieveAppointmentsUseCaseImpl(appointmentsRepositoryPort, usersRepositoryPort, programRepositoryPort, typeOfAppointmentRepositoryPort, studentsRepositoryPort, scheduleRepositoryPort, searchAppointmentPort),
+                new UpdateAppointmentUseCaseImpl(appointmentsRepositoryPort, usersRepositoryPort, scheduleRepositoryPort),
+                new SendEmailUseCaseImpl(sendEmailPort)
         );
     }
 

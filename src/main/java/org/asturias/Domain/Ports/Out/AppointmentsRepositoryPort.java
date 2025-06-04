@@ -1,8 +1,12 @@
 package org.asturias.Domain.Ports.Out;
 
 import org.asturias.Domain.DTO.Response.DetailsAppointmentDTO;
+import org.asturias.Domain.Enums.StatusAppointment;
 import org.asturias.Domain.Models.Appointments;
 import org.asturias.Domain.Models.Schedule;
+import org.asturias.Domain.Models.Students;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,6 +19,9 @@ public interface AppointmentsRepositoryPort {
     Appointments save (Appointments appointments);
     List<Appointments> findByDateAppointmentBetween(String start, String end);
     Optional<DetailsAppointmentDTO>  findDetailsAppointmentById (Long id);
+    List<Appointments> findAppointmentsByStudentsId(Long studentId);
+    Page<Appointments> findAllPageable(StatusAppointment status,  Pageable pageable);
+
 
 
 

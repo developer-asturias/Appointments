@@ -1,6 +1,7 @@
 package org.asturias.Application.UseCases;
 
 import org.asturias.Domain.DTO.Response.DetailsAppointmentDTO;
+import org.asturias.Domain.DTO.Response.SearchAppointmentsResponseDTO;
 import org.asturias.Domain.Models.*;
 import org.asturias.Domain.Ports.In.RetrieveEntityUseCase;
 import org.asturias.Domain.Ports.Out.*;
@@ -18,14 +19,16 @@ public class RetrieveAppointmentsUseCaseImpl implements RetrieveEntityUseCase {
     private final TypeOfAppointmentRepositoryPort typeOfAppointmentRepositoryPort;
     private final StudentsRepositoryPort studentsRepositoryPort;
     private final ScheduleRepositoryPort scheduleRepositoryPort;
+    private final SearchAppointmentPort searchAppointmentPort;
 
-    public RetrieveAppointmentsUseCaseImpl(AppointmentsRepositoryPort appointmentsRepositoryPort, UsersRepositoryPort usersRepositoryPort, ProgramRepositoryPort programRepositoryPort, TypeOfAppointmentRepositoryPort typeOfAppointmentRepositoryPort, StudentsRepositoryPort studentsRepositoryPort, ScheduleRepositoryPort scheduleRepositoryPort) {
+    public RetrieveAppointmentsUseCaseImpl(AppointmentsRepositoryPort appointmentsRepositoryPort, UsersRepositoryPort usersRepositoryPort, ProgramRepositoryPort programRepositoryPort, TypeOfAppointmentRepositoryPort typeOfAppointmentRepositoryPort, StudentsRepositoryPort studentsRepositoryPort, ScheduleRepositoryPort scheduleRepositoryPort, SearchAppointmentPort searchAppointmentPort) {
         this.appointmentsRepositoryPort = appointmentsRepositoryPort;
         this.usersRepositoryPort = usersRepositoryPort;
         this.programRepositoryPort = programRepositoryPort;
         this.typeOfAppointmentRepositoryPort = typeOfAppointmentRepositoryPort;
         this.studentsRepositoryPort = studentsRepositoryPort;
         this.scheduleRepositoryPort = scheduleRepositoryPort;
+        this.searchAppointmentPort = searchAppointmentPort;
     }
 
 
@@ -74,6 +77,21 @@ public class RetrieveAppointmentsUseCaseImpl implements RetrieveEntityUseCase {
     @Override
     public Optional<Schedule> getScheduleById(Long id) {
         return scheduleRepositoryPort.findById(id);
+    }
+
+    @Override
+    public Optional<Students> getStudentsByEmailAndDocumentNumber(String documentNumber, String email) {
+        return studentsRepositoryPort.findByEmailAndNumberDocument(documentNumber, email);
+    }
+
+    @Override
+    public List<SearchAppointmentsResponseDTO> searchAppointmentsByStudentId(Long studentId) {
+        return searchAppointmentPort.findAppointmentsWithStudentInfo(studentId);
+    }
+
+    @Override
+    public List<SearchAppointmentsResponseDTO> searchAppointmentsByStudentEmailAndDocument(String email, String documentNumber) {
+        return searchAppointmentPort.findAppointmentsByStudentEmailAndDocument(email, documentNumber);
     }
 
 

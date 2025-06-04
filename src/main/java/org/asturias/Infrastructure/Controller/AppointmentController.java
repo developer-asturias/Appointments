@@ -39,7 +39,7 @@ public class AppointmentController {
             ResponseAppointmentDTO responseAppointmentDTO = appointmentsService.createAppointmentAndUser(formDTO);
             return new ResponseEntity<>(responseAppointmentDTO, HttpStatus.CREATED);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al establecer un horario: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear una cita: " + e.getMessage());
         }
     }
 
@@ -74,6 +74,7 @@ public class AppointmentController {
                     .body("No se encontró la cita con ID: " + id);
         }
     }
+
 
 
 

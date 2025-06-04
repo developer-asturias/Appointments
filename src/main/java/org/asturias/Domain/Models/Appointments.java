@@ -16,7 +16,6 @@ public class Appointments {
     
     private Long id;
 
-    
     private LocalDateTime dateAppointment;
 
     private Long studentId;
@@ -29,9 +28,13 @@ public class Appointments {
     
     private String details;
 
-    private Users student;
+    private Students student;
 
-    public Appointments(Long id, LocalDateTime dateAppointment, Long studentId, Long programId, StatusAppointment status, Long typeOfAppointmentId, String details, Users student) {
+    @JsonIgnore
+    private TypeOfAppointment typeOfAppointment;
+
+
+    public Appointments(Long id, LocalDateTime dateAppointment, Long studentId, Long programId, StatusAppointment status, Long typeOfAppointmentId, String details, Students student, TypeOfAppointment typeOfAppointment) {
         this.id = id;
         this.dateAppointment = dateAppointment;
         this.studentId = studentId;
@@ -40,6 +43,7 @@ public class Appointments {
         this.typeOfAppointmentId = typeOfAppointmentId;
         this.details = details;
         this.student = student;
+        this.typeOfAppointment = typeOfAppointment;
     }
 
     public Appointments() {

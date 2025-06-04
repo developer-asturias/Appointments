@@ -25,7 +25,6 @@ public class ProgramController {
 
 
     @GetMapping("/get-all")
-    @CrossOrigin(origins = "http://localhost:5000", allowedHeaders = "*")
     public ResponseEntity<?> getAllSchedule() {
         try {
             List<Program> programs = appointmentsService.FindAllProgram();

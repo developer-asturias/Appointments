@@ -1,6 +1,21 @@
 spring:
+  mail:
+    host: smtp-mail.outlook.com
+    port: 587
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls.enable: true
+    username: agenda.asturias@asturias.edu.co
+    password: Agenda123*
+
   application:
     name: APPOINMENTSASTURIAS
+
+
+
 #  profiles:
 #    active: prod
 #  banner:

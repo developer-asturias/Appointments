@@ -25,6 +25,7 @@ public interface AppointmentMapper {
     })
     Appointments APPOINTMENTS(AppointmentsEntity appointmentsEntity);
 
+    List<Appointments> APPOINTMENTS_LIST(List<AppointmentsEntity> appointmentsEntities);
     @InheritInverseConfiguration
     @Mappings({
             @Mapping(source = "studentId", target = "studentId"),

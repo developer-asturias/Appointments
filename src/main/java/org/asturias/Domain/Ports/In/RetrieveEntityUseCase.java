@@ -1,6 +1,8 @@
 package org.asturias.Domain.Ports.In;
 
 import org.asturias.Domain.DTO.Response.DetailsAppointmentDTO;
+import org.asturias.Domain.DTO.Response.SearchAppointmentsResponseDTO;
+import org.asturias.Domain.Enums.StatusAppointment;
 import org.asturias.Domain.Models.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +23,15 @@ public interface RetrieveEntityUseCase {
     Optional<Students> getStudentById(Long id);
     List<Schedule> FindAllSchedule();
     Optional<Schedule> getScheduleById(Long id);
+    Optional <Students>  getStudentsByEmailAndDocumentNumber(String documentNumber, String email);
+//    List<Appointments> getAppointmentsByStudentId(Long id);
+
+    Page<Appointments> findAllPageable(StatusAppointment status, Pageable pageable);
+    List<SearchAppointmentsResponseDTO> searchAppointmentsByStudentId(Long studentId);
+    List<SearchAppointmentsResponseDTO> searchAppointmentsByStudentEmailAndDocument(String email, String documentNumber);
+
+
+
 
 
 
