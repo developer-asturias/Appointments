@@ -32,7 +32,17 @@ public class AppointmentsEntity {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
     private LocalDateTime dateAppointment;
 
-    // CAMBIAR USERS POR STUDENTS
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private UsersEntity user;
+
+    @NotNull
+    @Column(name = "user_id")
+    private Long userId;
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", insertable = false, updatable = false)
     private StudentsEntity students;

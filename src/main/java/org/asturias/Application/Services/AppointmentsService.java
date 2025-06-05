@@ -14,6 +14,8 @@ import org.asturias.Domain.Ports.In.*;
 import org.asturias.Infrastructure.Mappers.Request.AppointmentFormDtoMapper;
 import org.asturias.Infrastructure.Mappers.Response.CalendarAppointmentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 
@@ -118,6 +120,11 @@ public class AppointmentsService  implements CreateEntityUseCase, RetrieveEntity
     @Override
     public Optional <Students> getStudentsByEmailAndDocumentNumber(String documentNumber, String email) {
         return retrieveEntitiesUseCase.getStudentsByEmailAndDocumentNumber(documentNumber, email);
+    }
+
+    @Override
+    public Page<Appointments> findAllPageable(StatusAppointment status, Pageable pageable) {
+        return retrieveEntitiesUseCase.findAllPageable(status, pageable);
     }
 
     @Override

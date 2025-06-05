@@ -9,19 +9,19 @@ import org.asturias.Domain.DTO.Response.DetailsAppointmentDTO;
 import org.asturias.Domain.DTO.Response.ResponseAppointmentDTO;
 import org.asturias.Domain.Enums.StatusAppointment;
 import org.asturias.Domain.Models.*;
-import org.asturias.Infrastructure.Mappers.Response.CalendarAppointmentMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("/api/appointments")
@@ -33,13 +33,43 @@ public class AppointmentController {
 
 
     // crear una cita
-    @PostMapping(value = "/create", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE})
-    public ResponseEntity<?> createAppointment(@Valid @RequestBody AppointmentFormDTO formDTO ) {
+    @PostMapping(value = "/create", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE})
+    public ResponseEntity<?> createAppointment(@Valid @RequestBody AppointmentFormDTO formDTO) {
         try {
             ResponseAppointmentDTO responseAppointmentDTO = appointmentsService.createAppointmentAndUser(formDTO);
             return new ResponseEntity<>(responseAppointmentDTO, HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear una cita: " + e.getMessage());
+        }
+    }
+
+
+    @GetMapping("/get-all")
+    public ResponseEntity<?> getAllAppointments(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "sort", defaultValue = "id") String sort,
+            @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
+
+        try {
+            // Crear el objeto Sort
+            Sort.Direction sortDirection = Sort.Direction.fromString(direction);
+            Sort sortBy = Sort.by(sortDirection, sort);
+
+            // Crear el objeto Pageable
+            Pageable pageable = PageRequest.of(page, size, sortBy);
+
+            // Obtener las citas paginadas
+            Page<Appointments> appointmentsPage = appointmentsService.findAllPageable(StatusAppointment.DELETED, pageable);
+
+            return ResponseEntity.ok(appointmentsPage);
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                    .body("Parámetros inválidos: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al obtener las citas: " + e.getMessage());
         }
     }
 

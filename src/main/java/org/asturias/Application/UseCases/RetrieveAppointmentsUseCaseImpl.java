@@ -2,9 +2,12 @@ package org.asturias.Application.UseCases;
 
 import org.asturias.Domain.DTO.Response.DetailsAppointmentDTO;
 import org.asturias.Domain.DTO.Response.SearchAppointmentsResponseDTO;
+import org.asturias.Domain.Enums.StatusAppointment;
 import org.asturias.Domain.Models.*;
 import org.asturias.Domain.Ports.In.RetrieveEntityUseCase;
 import org.asturias.Domain.Ports.Out.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 
 import java.time.LocalDateTime;
@@ -82,6 +85,11 @@ public class RetrieveAppointmentsUseCaseImpl implements RetrieveEntityUseCase {
     @Override
     public Optional<Students> getStudentsByEmailAndDocumentNumber(String documentNumber, String email) {
         return studentsRepositoryPort.findByEmailAndNumberDocument(documentNumber, email);
+    }
+
+    @Override
+    public Page<Appointments> findAllPageable(StatusAppointment status, Pageable pageable) {
+        return appointmentsRepositoryPort.findAllPageable(status, pageable);
     }
 
     @Override
