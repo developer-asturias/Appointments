@@ -44,6 +44,8 @@ public class AppointmentFormDTO {
     @Size(max = 200, message = "Los detalles no pueden superar los 200 caracteres.")
     private String details;
 
+    private Boolean dataTreatments;
+
 
     public AppointmentFormDTO() {
     }

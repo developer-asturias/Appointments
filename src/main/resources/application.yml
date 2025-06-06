@@ -23,7 +23,7 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    password: ${DATABASE_PASSWORD:postgrest}
+    password: ${DATABASE_PASSWORD:password}
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/appointments_asturiasDB}
     username: ${DATABASE_USERNAME:postgres}
   jpa:

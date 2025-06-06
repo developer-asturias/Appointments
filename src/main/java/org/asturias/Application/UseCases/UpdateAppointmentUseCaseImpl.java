@@ -40,4 +40,9 @@ public class UpdateAppointmentUseCaseImpl implements UpdateEntityUseCase {
     public Optional<Appointments> updateAppointment(Long id, Appointments schedule) {
         return appointmentsRepositoryPort.update(schedule);
     }
+
+    @Override
+    public Optional<Appointments> updateAppointmentMentor(Long id, Long mentorId) {
+        return appointmentsRepositoryPort.updateAppointmentMentor(id, mentorId);
+    }
 }

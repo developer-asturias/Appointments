@@ -73,6 +73,11 @@ public class AppointmentsService  implements CreateEntityUseCase, RetrieveEntity
 
 
     @Override
+    public List<Users> getAllUsers() {
+        return retrieveEntitiesUseCase.getAllUsers();
+    }
+
+    @Override
     public Optional<Users> getUserById(Long id) {
         return retrieveEntitiesUseCase.getUserById(id);
     }
@@ -123,7 +128,7 @@ public class AppointmentsService  implements CreateEntityUseCase, RetrieveEntity
     }
 
     @Override
-    public Page<Appointments> findAllPageable(StatusAppointment status, Pageable pageable) {
+    public Page<AppointmentsPageableResponseDTO> findAllPageable(StatusAppointment status, Pageable pageable) {
         return retrieveEntitiesUseCase.findAllPageable(status, pageable);
     }
 
@@ -153,9 +158,23 @@ public class AppointmentsService  implements CreateEntityUseCase, RetrieveEntity
     }
 
     @Override
+    public Optional<Appointments> updateAppointmentMentor(Long id, Long mentorId) {
+        return updateEntityUseCase.updateAppointmentMentor(id, mentorId);
+    }
+
+    @Override
     public void sendAppointmentConfirmation(String to, ResponseAppointmentDTO appointmentDetails) {
         sendEmailUseCase.sendAppointmentConfirmation(to, appointmentDetails);
     }
+
+
+
+
+
+
+
+
+
 
 
 

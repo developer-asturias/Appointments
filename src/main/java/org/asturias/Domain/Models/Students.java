@@ -1,5 +1,6 @@
 package org.asturias.Domain.Models;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.asturias.Infrastructure.Entities.ProgramEntity;
@@ -7,8 +8,8 @@ import org.asturias.Infrastructure.Entities.ProgramEntity;
 
 @Setter
 @Getter
+@AllArgsConstructor
 public class Students {
-
 
     private Long id;
 
@@ -22,19 +23,9 @@ public class Students {
 
     private String numberDocument;
 
-    private ProgramEntity program;
+    private Program program;
 
     private Long programId;
 
-    public Students(Long id, String name, String lastName, String email, String phone, String numberDocument, ProgramEntity program, Long programId) {
-        this.id = id;
-        this.name = name;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone = phone;
-        this.numberDocument = numberDocument;
-        this.program = program;
-        this.programId = programId;
-    }
 
 }

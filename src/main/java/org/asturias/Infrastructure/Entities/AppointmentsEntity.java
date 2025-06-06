@@ -38,7 +38,7 @@ public class AppointmentsEntity {
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private UsersEntity user;
 
-    @NotNull
+
     @Column(name = "user_id")
     private Long userId;
 

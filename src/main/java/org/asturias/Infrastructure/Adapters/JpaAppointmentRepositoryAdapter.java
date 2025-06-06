@@ -1,6 +1,9 @@
 package org.asturias.Infrastructure.Adapters;
 
 
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import org.asturias.Domain.DTO.Response.AppointmentsPageableResponseDTO;
 import org.asturias.Domain.DTO.Response.DetailsAppointmentDTO;
 import org.asturias.Domain.Enums.StatusAppointment;
 import org.asturias.Domain.Models.Appointments;
@@ -10,8 +13,10 @@ import org.asturias.Domain.Ports.Out.AppointmentsRepositoryPort;
 import org.asturias.Infrastructure.Entities.AppointmentsEntity;
 import org.asturias.Infrastructure.Entities.UsersEntity;
 import org.asturias.Infrastructure.Mappers.Entities.AppointmentMapper;
+import org.asturias.Infrastructure.Mappers.Response.AppointmentsPageableResponseMapper;
 import org.asturias.Infrastructure.Mappers.Response.DetailsAppointmentMapper;
 import org.asturias.Infrastructure.Repositories.JpaAppointmentRepository;
+import org.asturias.Infrastructure.Repositories.JpaUsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,10 +35,16 @@ public class JpaAppointmentRepositoryAdapter  implements AppointmentsRepositoryP
     private JpaAppointmentRepository jpaAppointmentRepository;
 
     @Autowired
+    private JpaUsersRepository jpaUsersRepository;
+
+    @Autowired
     private AppointmentMapper   appointmentMapper;
 
     @Autowired
     private DetailsAppointmentMapper detailsAppointmentMapper;
+
+    @Autowired
+    private AppointmentsPageableResponseMapper appointmentsPageableResponseMapper;
 
 
 
@@ -73,59 +84,56 @@ public class JpaAppointmentRepositoryAdapter  implements AppointmentsRepositoryP
                 .toList();
     }
 
+
     @Override
     public Optional<DetailsAppointmentDTO> findDetailsAppointmentById(Long id) {
-        // 1. Obtener el modelo Appointment por su ID
-//        Optional<Appointments> appointmentOpt = findById(id);
-//
-//        // 2. Si no existe la cita, retornar Optional vacío
-//        if (appointmentOpt.isEmpty()) {
-//            return Optional.empty();
-//        }
-//
-//        Appointments appointment = appointmentOpt.get();
-//
-//        // 3. Obtener el usuario asociado a la cita
-//        Users user = appointment.getStudent();
-//        if (user == null) {
-//            return Optional.empty(); // No se puede crear el DTO sin usuario
-//        }
-
-        // 4. Mapear la información al DTO utilizando el mapper
-//        DetailsAppointmentDTO detailsDTO = detailsAppointmentMapper.toDetailsAppointmentDTO(appointment, user);
-
-        // 5. Retornar el DTO dentro de un Optional
-//        return Optional.of(detailsDTO);
-        return Optional.empty();
+        Optional<Appointments> appointmentOpt = findById(id);
+        if (appointmentOpt.isPresent()) {
+            Appointments appointment = appointmentOpt.get();
+            DetailsAppointmentDTO detailsDTO = detailsAppointmentMapper.toDetailsAppointmentDTO(appointment);
+            return Optional.of(detailsDTO);
+        } else {
+            return Optional.empty();
+        }
     }
+
+
+
 
     @Override
     public List<Appointments> findAppointmentsByStudentsId(Long studentId) {
         return jpaAppointmentRepository.findByStudentId(studentId).stream().map(appointmentMapper::APPOINTMENTS).toList();
     }
 
-    @Override
-    public Page<Appointments> findAllPageable(StatusAppointment status, Pageable pageable) {
-        Page<AppointmentsEntity> appointmentsEntities = jpaAppointmentRepository.findByStatusNot(StatusAppointment.DELETED, pageable);
 
-        return appointmentsEntities.map(entity -> appointmentMapper.APPOINTMENTS(entity));
+
+
+    @Override
+    public Page<AppointmentsPageableResponseDTO> findAllPageable(StatusAppointment status, Pageable pageable) {
+        Page<AppointmentsEntity> appointmentsEntities = jpaAppointmentRepository.findByStatusNot(StatusAppointment.DELETED, pageable);
+        Page<Appointments> appointmentsPage = appointmentsEntities.map(entity -> appointmentMapper.APPOINTMENTS(entity));
+        return appointmentsPage.map(entity -> appointmentsPageableResponseMapper.toDto(entity));
     }
 
-//
-//    @Override
-//    public Page<Appointments> findAllPageable(StatusAppointment status, Pageable pageable) {
-//        // Asumiendo que quieres filtrar por un status Y excluir DELETED
-//        Page<AppointmentsEntity> appointmentsEntities;
-//
-//        if (status != null) {
-//            // Filtra por status específico y excluye DELETED
-//            appointmentsEntities = jpaAppointmentRepository.findByStatusAndStatusNot(status, StatusAppointment.DELETED, pageable);
-//        } else {
-//            // Solo excluye DELETED
-//            appointmentsEntities = jpaAppointmentRepository.findByStatusNot(StatusAppointment.DELETED, pageable);
-//        }
-//
-//        return appointmentsEntities.map(entity -> appointmentMapper.APPOINTMENTS(entity));
-//    }
+
+
+    @Override
+    @Transactional
+    public Optional<Appointments> updateAppointmentMentor(Long id, Long mentorId) {
+
+        Optional<AppointmentsEntity> appointmentOpt = jpaAppointmentRepository.findById(id);
+        if (appointmentOpt.isEmpty()) {
+            throw new EntityNotFoundException("La cita con id " + id + " no existe");
+        }
+        if (!jpaUsersRepository.existsById(mentorId)) {
+            throw new EntityNotFoundException("El mentor con id " + mentorId + " no existe");
+        }
+        AppointmentsEntity appointmentEntity = appointmentOpt.get();
+        appointmentEntity.setUserId(mentorId);
+        appointmentEntity.setStatus(StatusAppointment.ASSIGNED);
+        AppointmentsEntity updatedEntity = jpaAppointmentRepository.save(appointmentEntity);
+        return Optional.of(appointmentMapper.APPOINTMENTS(updatedEntity));
+    }
+
 
 }

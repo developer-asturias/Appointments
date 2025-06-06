@@ -1,9 +1,11 @@
 package org.asturias.Infrastructure.Controller;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.asturias.Application.Services.AppointmentsService;
 import org.asturias.Domain.DTO.Request.AppointmentFormDTO;
+import org.asturias.Domain.DTO.Response.AppointmentsPageableResponseDTO;
 import org.asturias.Domain.DTO.Response.CalendarAppointmentDTO;
 import org.asturias.Domain.DTO.Response.DetailsAppointmentDTO;
 import org.asturias.Domain.DTO.Response.ResponseAppointmentDTO;
@@ -60,7 +62,7 @@ public class AppointmentController {
             Pageable pageable = PageRequest.of(page, size, sortBy);
 
             // Obtener las citas paginadas
-            Page<Appointments> appointmentsPage = appointmentsService.findAllPageable(StatusAppointment.DELETED, pageable);
+            Page<AppointmentsPageableResponseDTO> appointmentsPage = appointmentsService.findAllPageable(StatusAppointment.DELETED, pageable);
 
             return ResponseEntity.ok(appointmentsPage);
 
@@ -102,6 +104,36 @@ public class AppointmentController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("No se encontró la cita con ID: " + id);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+    @PutMapping("/{id}/mentor/{mentorId}")
+    public ResponseEntity<?> updateAppointmentMentor(
+            @PathVariable("id") Long appointmentId,
+            @PathVariable("mentorId") Long mentorId) {
+
+        try {
+            return appointmentsService.updateAppointmentMentor(appointmentId, mentorId)
+                    .map(ResponseEntity::ok)
+                    .orElse(null);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        } catch (Exception e) {
+            // Captura cualquier otra excepción
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al actualizar el mentor: " + e.getMessage());
         }
     }
 

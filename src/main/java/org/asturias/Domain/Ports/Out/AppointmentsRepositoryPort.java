@@ -1,5 +1,6 @@
 package org.asturias.Domain.Ports.Out;
 
+import org.asturias.Domain.DTO.Response.AppointmentsPageableResponseDTO;
 import org.asturias.Domain.DTO.Response.DetailsAppointmentDTO;
 import org.asturias.Domain.Enums.StatusAppointment;
 import org.asturias.Domain.Models.Appointments;
@@ -20,8 +21,8 @@ public interface AppointmentsRepositoryPort {
     List<Appointments> findByDateAppointmentBetween(String start, String end);
     Optional<DetailsAppointmentDTO>  findDetailsAppointmentById (Long id);
     List<Appointments> findAppointmentsByStudentsId(Long studentId);
-    Page<Appointments> findAllPageable(StatusAppointment status,  Pageable pageable);
-
+    Page<AppointmentsPageableResponseDTO> findAllPageable(StatusAppointment status, Pageable pageable);
+    Optional<Appointments> updateAppointmentMentor(Long id, Long mentorId);
 
 
 

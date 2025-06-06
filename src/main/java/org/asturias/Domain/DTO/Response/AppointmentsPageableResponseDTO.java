@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class AppointmentsPageableResponseDTO {
 
+
+    private Long appointmentId;
     private String userName;
 
     private String Email;

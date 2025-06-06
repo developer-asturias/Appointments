@@ -21,11 +21,13 @@ public interface AppointmentMapper {
             @Mapping(source = "typeOfAppointmentId", target = "typeOfAppointmentId"),
             @Mapping(source = "details", target = "details"),
             @Mapping(source = "students", target = "student"),
-            @Mapping(target = "programId", ignore = true),
     })
+
+
     Appointments APPOINTMENTS(AppointmentsEntity appointmentsEntity);
 
     List<Appointments> APPOINTMENTS_LIST(List<AppointmentsEntity> appointmentsEntities);
+
     @InheritInverseConfiguration
     @Mappings({
             @Mapping(source = "studentId", target = "studentId"),

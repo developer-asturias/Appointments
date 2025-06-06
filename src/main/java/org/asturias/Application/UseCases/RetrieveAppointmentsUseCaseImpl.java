@@ -1,5 +1,6 @@
 package org.asturias.Application.UseCases;
 
+import org.asturias.Domain.DTO.Response.AppointmentsPageableResponseDTO;
 import org.asturias.Domain.DTO.Response.DetailsAppointmentDTO;
 import org.asturias.Domain.DTO.Response.SearchAppointmentsResponseDTO;
 import org.asturias.Domain.Enums.StatusAppointment;
@@ -34,6 +35,11 @@ public class RetrieveAppointmentsUseCaseImpl implements RetrieveEntityUseCase {
         this.searchAppointmentPort = searchAppointmentPort;
     }
 
+
+    @Override
+    public List<Users> getAllUsers() {
+        return usersRepositoryPort.findAll();
+    }
 
     @Override
     public Optional<Users> getUserById(Long id) {
@@ -88,7 +94,7 @@ public class RetrieveAppointmentsUseCaseImpl implements RetrieveEntityUseCase {
     }
 
     @Override
-    public Page<Appointments> findAllPageable(StatusAppointment status, Pageable pageable) {
+    public Page<AppointmentsPageableResponseDTO> findAllPageable(StatusAppointment status, Pageable pageable) {
         return appointmentsRepositoryPort.findAllPageable(status, pageable);
     }
 

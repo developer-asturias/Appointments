@@ -12,17 +12,18 @@ import org.mapstruct.Mappings;
 @Mapper(componentModel = "spring")
 public interface DetailsAppointmentMapper {
 
-//    @Mappings({
-//            @Mapping(target = "appointmentName", source = "appointment.name"),
-//            @Mapping(target = "appointmentDescription", source = "appointment.details"),
-//            @Mapping(target = "appointmentDate", expression = "java(appointment.getDateAppointment().toString())"),
-//            @Mapping(target = "appointmentStatus", source = "appointment.status"),
-//            @Mapping(target = "numberDocument", source = "user.numberDocument"),
-////            @Mapping(target = "linkTeams", source = "appointment.teamsLink"),
-//            @Mapping(target = "nameStudent", source = "user.name"),
-//            @Mapping(target = "phone", source = "user.phone"),
-//            @Mapping(target = "email", source = "user.email")
-//    })
-//    DetailsAppointmentDTO toDetailsAppointmentDTO(Appointments appointment, Users user);
+    @Mappings({
+            @Mapping(target = "appointmentId", source = "appointments.id"),
+            @Mapping(target = "typeAppointmentName", source = "appointments.typeOfAppointment.name"),
+            @Mapping(target = "appointmentDetails", source = "appointments.details"),
+            @Mapping(target = "appointmentDate", source = "appointments.dateAppointment"),
+            @Mapping(target = "numberDocument", source = "appointments.student.numberDocument"),
+            @Mapping(target = "nameStudent", source = "appointments.student.name"),
+            @Mapping(target = "phone", source = "appointments.student.phone"),
+            @Mapping(target = "email", source = "appointments.student.email"),
+            @Mapping(target = "programName", source = "appointments.student.program.name" ),
+            @Mapping(target = "mentorName", source = "appointments.user.name" )
+    })
+    DetailsAppointmentDTO toDetailsAppointmentDTO(Appointments appointments);
 }
 

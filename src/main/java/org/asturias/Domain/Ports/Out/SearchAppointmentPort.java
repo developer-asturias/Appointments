@@ -9,4 +9,5 @@ public interface SearchAppointmentPort {
     List<SearchAppointmentsResponseDTO> findAppointmentsWithStudentInfo(Long studentId);
     List<SearchAppointmentsResponseDTO> findAppointmentsByStudentEmailAndDocument(String email, String documentNumber);
 
+
 }

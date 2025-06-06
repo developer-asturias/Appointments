@@ -14,5 +14,7 @@ public interface UpdateEntityUseCase {
 
     Optional<Appointments> updateAppointment(Long id, Appointments appointments);
 
+    Optional<Appointments> updateAppointmentMentor(Long id, Long mentorId);
+
 
 }
