@@ -1,9 +1,20 @@
 package org.asturias.Infrastructure.Entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
+
 
 @Entity
 @Table(name = "type_of_appointment")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class TypeOfAppointmentEntity {
 
     @Id
@@ -13,34 +24,18 @@ public class TypeOfAppointmentEntity {
     @Column(nullable = false, unique = true)
     private String name;
 
+
+    @Column(nullable = false, name = "duration_minutes")
+    private Integer durationMinutes;
+
+
     @Column(length = 255)
     private String description;
 
+    @OneToMany(mappedBy = "typeOfAppointment", fetch = FetchType.LAZY)
+    private List<ScheduleEntity> schedules;
 
     public TypeOfAppointmentEntity() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

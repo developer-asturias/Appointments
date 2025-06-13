@@ -26,7 +26,6 @@ public class AppointmentsEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @NotNull(message = "la fecha de la cita no deber ser nula")
     @Column(name = "datetime_appointment", nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")

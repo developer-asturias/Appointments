@@ -1,10 +1,7 @@
 package org.asturias.Infrastructure.Mappers.Entities;
 
 
-import org.asturias.Domain.Models.Appointments;
 import org.asturias.Domain.Models.dataTreatments;
-import org.asturias.Infrastructure.Entities.AppointmentsEntity;
-import org.asturias.Infrastructure.Entities.dataTreatmentsEntity;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

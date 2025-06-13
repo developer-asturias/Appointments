@@ -35,7 +35,7 @@ public class AppointmentFormDTO {
     @NotBlank(message = "El número de documento no puede estar vacío.")
     private String numberDocument;
 
-    @NotNull(message = "La fecha de la cita no puede ser nula.")
+    @NotNull(message = "La fecha de la cita no puede ser nula.")   
     private LocalDateTime date;
 
     @NotNull(message = "El tipo de cita no puede ser nulo.")
