@@ -1,12 +1,22 @@
 package org.asturias.Domain.Models;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.asturias.Domain.Enums.StatusAppointment;
+import org.asturias.Infrastructure.Entities.ScheduleEntity;
+import org.asturias.Infrastructure.Entities.StatusEntity;
+import org.asturias.Infrastructure.Entities.StudentsEntity;
+import org.asturias.Infrastructure.Entities.UsersEntity;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -16,27 +26,34 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Appointments {
-    
+
     private Long id;
 
-    private LocalDateTime dateAppointment;
-
-    private Users user;
-
-    private Long userId;
-
-    private Long studentId;
-
-    private StatusAppointment status;
-
-    private Long typeOfAppointmentId;
-    
     private String details;
 
-    private Students student;
+    private StudentsEntity students;
 
-    @JsonIgnore
-    private TypeOfAppointment typeOfAppointment;
+    private Schedule schedule;
+
+    private LocalDateTime updateAt;
+
+    private LocalDateTime createAt;
+
+    private UsersEntity mentors;
+
+    private String mentorNotes;
+
+    private String meetingUrl;
+
+    private LocalDateTime startTime;
+
+    private LocalDateTime endTime;
+
+    private StatusEntity status;
+
+    private LocalDateTime mentorJoinedAt;
+
+    private LocalDateTime studentJoinedAt;
 
 
 }

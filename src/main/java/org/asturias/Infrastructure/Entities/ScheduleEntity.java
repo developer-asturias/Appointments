@@ -1,6 +1,7 @@
 package org.asturias.Infrastructure.Entities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,7 +24,6 @@ public class ScheduleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
 
     @Column(name = "is_active")
     private Boolean isActive;
@@ -64,6 +64,10 @@ public class ScheduleEntity {
     @Column(name = "date_remove", updatable = true, insertable = false)
     private LocalDateTime dateRemove;
 
+
+    @Min(value = 1, message = "El número mínimo de cupos debe ser 1")
+    @Column(name = "capacity", nullable = false)
+    private Integer capacity;
 
 
 

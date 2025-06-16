@@ -11,8 +11,7 @@ public interface SearchAppointmentsMapper {
 
         @Mapping(target = "idAppointment", source = "appointment.id")
         @Mapping(target = "details", source = "appointment.details")
-        @Mapping(target = "typeOfAppointmentName", source = "appointment.typeOfAppointment.name")
-        @Mapping(target = "status", source = "appointment.status")
-        @Mapping(target = "date", source = "appointment.dateAppointment")
+//        @Mapping(target = "typeOfAppointmentName", source = "appointment.typeOfAppointment.name")
+//        @Mapping(target = "date", source = "appointment.dateAppointment")
         SearchAppointmentsResponseDTO toDto(Appointments appointment, Students student);
 }

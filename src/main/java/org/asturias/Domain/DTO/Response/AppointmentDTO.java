@@ -1,7 +1,9 @@
 package org.asturias.Domain.DTO.Response;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -10,6 +12,8 @@ import java.util.List;
 
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class AppointmentDTO {
 
     private Long id;
@@ -20,15 +24,8 @@ public class AppointmentDTO {
 
     private String details;
 
-    private UserDTO student;
+    private UserDTO students;
 
-    public AppointmentDTO(Long id, LocalDateTime dateAppointment, String typeOfAppointmentName, String details, UserDTO student) {
-        this.id = id;
-        this.dateAppointment = dateAppointment;
-        this.typeOfAppointmentName = typeOfAppointmentName;
-        this.details = details;
-        this.student = student;
-    }
 
 
 

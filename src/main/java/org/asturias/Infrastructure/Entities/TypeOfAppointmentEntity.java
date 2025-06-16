@@ -35,7 +35,5 @@ public class TypeOfAppointmentEntity {
     @OneToMany(mappedBy = "typeOfAppointment", fetch = FetchType.LAZY)
     private List<ScheduleEntity> schedules;
 
-    public TypeOfAppointmentEntity() {
-    }
 
 }

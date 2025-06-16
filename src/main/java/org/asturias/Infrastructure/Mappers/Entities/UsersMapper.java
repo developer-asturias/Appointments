@@ -15,10 +15,14 @@ public interface UsersMapper {
 
     @Mappings({
             @Mapping(source = "id", target = "id"),
+            @Mapping(source = "createAt", target = "createAt"),
+            @Mapping(source = "updateAt", target = "updateAt"),
             @Mapping(source = "password", target = "password"),
             @Mapping(source = "name", target = "name"),
             @Mapping(source = "email", target = "email"),
-            @Mapping(source = "numberDocument", target = "numberDocument"),
+            @Mapping(source = "documentNumber", target = "documentNumber"),
+            @Mapping(source = "enabled", target = "enabled"),
+            @Mapping(source = "lastLogin", target = "lastLogin"),
     })
     Users USERS(UsersEntity usersEntity);
 

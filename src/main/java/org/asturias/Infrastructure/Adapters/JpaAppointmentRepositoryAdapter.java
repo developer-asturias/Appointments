@@ -55,11 +55,11 @@ public class JpaAppointmentRepositoryAdapter  implements AppointmentsRepositoryP
 
     @Override
     public Optional<Appointments> update(Appointments appointments) {
-        if (jpaAppointmentRepository.existsById(appointments.getId())){
-            AppointmentsEntity appointmentsEntity = appointmentMapper.APPOINTMENTS_ENTITY(appointments);
-            AppointmentsEntity updatedAppointmemt= jpaAppointmentRepository.save(appointmentsEntity);
-            return Optional.of(appointmentMapper.APPOINTMENTS(updatedAppointmemt));
-        }
+//        if (jpaAppointmentRepository.existsById(appointments.getId())){
+//            AppointmentsEntity appointmentsEntity = appointmentMapper.APPOINTMENTS_ENTITY(appointments);
+//            AppointmentsEntity updatedAppointmemt= jpaAppointmentRepository.save(appointmentsEntity);
+//            return Optional.of(appointmentMapper.APPOINTMENTS(updatedAppointmemt));
+//        }
         return  Optional.empty();
     }
 
@@ -79,10 +79,12 @@ public class JpaAppointmentRepositoryAdapter  implements AppointmentsRepositoryP
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
         LocalDateTime startDate = LocalDateTime.parse(start, formatter);
         LocalDateTime endDate = LocalDateTime.parse(end, formatter);
-        return jpaAppointmentRepository.findByDateAppointmentBetween(startDate, endDate)
-                .stream().map(appointmentMapper::APPOINTMENTS)
-                .toList();
+//        return jpaAppointmentRepository.findByDateAppointmentBetween(startDate, endDate)
+//                .stream().map(appointmentMapper::APPOINTMENTS)
+//                .toList();
+    return  null;
     }
+
 
 
     @Override
@@ -129,8 +131,8 @@ public class JpaAppointmentRepositoryAdapter  implements AppointmentsRepositoryP
             throw new EntityNotFoundException("El mentor con id " + mentorId + " no existe");
         }
         AppointmentsEntity appointmentEntity = appointmentOpt.get();
-        appointmentEntity.setUserId(mentorId);
-        appointmentEntity.setStatus(StatusAppointment.ASSIGNED);
+//        appointmentEntity.setUserId(mentorId);
+//        appointmentEntity.setStatus(StatusAppointment.ASSIGNED);
         AppointmentsEntity updatedEntity = jpaAppointmentRepository.save(appointmentEntity);
         return Optional.of(appointmentMapper.APPOINTMENTS(updatedEntity));
     }

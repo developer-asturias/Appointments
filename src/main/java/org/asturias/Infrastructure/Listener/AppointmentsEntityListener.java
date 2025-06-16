@@ -6,12 +6,12 @@ import org.asturias.Infrastructure.Entities.AppointmentsEntity;
 
 public class AppointmentsEntityListener {
 
-    @PrePersist
-    public void prePersist(AppointmentsEntity entity) {
-        if (entity.getStatus() == null) {
-            entity.setStatus(StatusAppointment.PENDING);
-        }
-    }
+//    @PrePersist
+//    public void prePersist(AppointmentsEntity entity) {
+//        if (entity.getStatus() == null) {
+//            entity.setStatus(StatusAppointment.PENDING);
+//        }
+//    }
 
 
 }

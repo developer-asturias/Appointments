@@ -7,21 +7,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "Program")
-@Getter
+import java.util.List;
+
 @Setter
+@Getter
+@Entity
+@Table(name = "status")
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class ProgramEntity {
+public class StatusEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
     @Column(name = "name")
-    private  String name;
+    private String name;
+
+
+    @OneToMany(mappedBy = "status", fetch = FetchType.LAZY)
+    private List<AppointmentsEntity> appointments;
+
 
 }

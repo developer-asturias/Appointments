@@ -1,31 +1,50 @@
 package org.asturias.Domain.Models;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.asturias.Infrastructure.Entities.TypeOfAppointmentEntity;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Schedule {
 
-    private int dayOfWeek;
+    private Long id;
 
+    private Boolean isActive;
 
-    @JsonFormat(pattern = "HH:mm")
+    @Min(value = 1, message = "El día de la semana debe ser mínimo 1 (Lunes)")
+    @Max(value = 6, message = "El día de la semana debe ser máximo 6 (Sábado)")
+    private Integer dayOfWeek;
+
     private LocalTime startTime;
 
-    @JsonFormat(pattern = "HH:mm")
     private LocalTime endTime;
 
-    private boolean active;
+    private Long typeOfAppointmentId;
+
+    @JsonIgnore
+    private TypeOfAppointmentEntity typeOfAppointment;
 
 
-    public Schedule(int dayOfWeek, LocalTime startTime, LocalTime endTime, boolean active) {
-        this.dayOfWeek = dayOfWeek;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.active = active;
-    }
+    @Min(value = 1, message = "El número mínimo de cupos debe ser 1")
+    private Integer capacity;
+
+
+
+
 }

@@ -18,6 +18,9 @@ public interface TypeAppointmentMapper {
     @Mappings({
             @Mapping(source = "id", target = "id"),
             @Mapping(source = "name", target = "name"),
+            @Mapping(source = "description", target = "description"),
+            @Mapping(source = "schedules", target = "schedules"),
+
     })
     TypeOfAppointment TYPE_OF_APPOINTMENT(TypeOfAppointmentEntity typeOfAppointment);
 

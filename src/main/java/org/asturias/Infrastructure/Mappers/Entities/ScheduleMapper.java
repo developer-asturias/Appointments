@@ -15,10 +15,14 @@ import java.util.List;
 public interface ScheduleMapper {
 
     @Mappings({
+            @Mapping(source = "id", target = "id"),
+            @Mapping(source = "isActive", target = "isActive"),
             @Mapping(source = "dayOfWeek", target = "dayOfWeek"),
             @Mapping(source = "startTime", target = "startTime"),
             @Mapping(source = "endTime", target = "endTime"),
-            @Mapping(source = "active", target = "active"),
+            @Mapping(source = "typeOfAppointmentId", target = "typeOfAppointmentId"),
+            @Mapping(source = "typeOfAppointment", target = "typeOfAppointment"),
+            @Mapping(source = "capacity", target = "capacity")
 
     })
     Schedule SCHEDULE(ScheduleEntity schedule);

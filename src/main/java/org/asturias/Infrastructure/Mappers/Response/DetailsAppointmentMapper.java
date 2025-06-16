@@ -13,16 +13,16 @@ import org.mapstruct.Mappings;
 public interface DetailsAppointmentMapper {
 
     @Mappings({
-            @Mapping(target = "appointmentId", source = "appointments.id"),
-            @Mapping(target = "typeAppointmentName", source = "appointments.typeOfAppointment.name"),
-            @Mapping(target = "appointmentDetails", source = "appointments.details"),
-            @Mapping(target = "appointmentDate", source = "appointments.dateAppointment"),
-            @Mapping(target = "numberDocument", source = "appointments.student.numberDocument"),
-            @Mapping(target = "nameStudent", source = "appointments.student.name"),
-            @Mapping(target = "phone", source = "appointments.student.phone"),
-            @Mapping(target = "email", source = "appointments.student.email"),
-            @Mapping(target = "programName", source = "appointments.student.program.name" ),
-            @Mapping(target = "mentorName", source = "appointments.user.name" )
+//            @Mapping(target = "appointmentId", source = "appointments.id"),
+//            @Mapping(target = "typeAppointmentName", source = "appointments.typeOfAppointment.name"),
+//            @Mapping(target = "appointmentDetails", source = "appointments.details"),
+//            @Mapping(target = "appointmentDate", source = "appointments.dateAppointment"),
+//            @Mapping(target = "numberDocument", source = "appointments.student.numberDocument"),
+//            @Mapping(target = "nameStudent", source = "appointments.student.name"),
+            @Mapping(target = "phone", source = "appointments.students.phone"),
+//            @Mapping(target = "email", source = "appointments.student.email"),
+//            @Mapping(target = "programName", source = "appointments.student.program.name" ),
+//            @Mapping(target = "mentorName", source = "appointments.user.name" )
     })
     DetailsAppointmentDTO toDetailsAppointmentDTO(Appointments appointments);
 }

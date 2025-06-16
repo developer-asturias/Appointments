@@ -11,12 +11,12 @@ import org.mapstruct.Mapping;
 public interface AppointmentsPageableResponseMapper {
 
     @Mapping(target = "appointmentId", source = "appointment.id")
-    @Mapping(target = "userName", source = "appointment.student.name")
-    @Mapping(target = "Email", source = "appointment.student.email")
-    @Mapping(target = "program", source = "appointment.student.program.name")
-    @Mapping(target = "typeOfAppointmentName", source = "appointment.typeOfAppointment.name")
-    @Mapping(target = "date", source = "appointment.dateAppointment")
-    @Mapping(target = "status", source = "appointment.status")
-    @Mapping(target = "mentorName", source = "appointment.user.name")
+    @Mapping(target = "userName", source = "appointment.students.name")
+    @Mapping(target = "email", source = "appointment.students.email")
+    @Mapping(target = "program", source = "appointment.students.program.name")
+//    @Mapping(target = "typeOfAppointmentName", source = "appointment.typeOfAppointment.name")
+//    @Mapping(target = "date", source = "appointment.dateAppointment")
+//    @Mapping(target = "status", source = "appointment.status")
+//    @Mapping(target = "mentorName", source = "appointment.user.name")
     AppointmentsPageableResponseDTO toDto(Appointments appointment);
 }

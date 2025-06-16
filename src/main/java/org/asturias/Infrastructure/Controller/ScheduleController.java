@@ -66,31 +66,17 @@ public class ScheduleController {
     @PutMapping("/update-schedule/{id}")
     public ResponseEntity<?> updateScheduleById(@PathVariable Long id, @Valid @RequestBody Schedule schedule) {
         try {
-            // Verificar si existe el horario
-            Optional<Schedule> existingSchedule = appointmentsService.getScheduleById(id);
-
-            if (existingSchedule.isEmpty()) {
-                Map<String, String> response = new HashMap<>();
-                response.put("message", "Horario no encontrado con id: " + id);
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-            }
-
-            // Intentar actualizar
             Optional<Schedule> updatedSchedule = appointmentsService.updateSchedule(id, schedule);
 
-            if (updatedSchedule.isPresent()) {
-                return ResponseEntity.ok(updatedSchedule.get());
-            } else {
-                Map<String, String> response = new HashMap<>();
-                response.put("message", "No se pudo actualizar el horario");
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-            }
+            return ResponseEntity.ok(updatedSchedule.orElse(null));
+
         } catch (Exception e) {
             Map<String, String> response = new HashMap<>();
             response.put("message", "Error al actualizar el horario: " + e.getMessage());
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
+
 
 
 

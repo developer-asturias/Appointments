@@ -22,9 +22,9 @@ public interface CalendarAppointmentMapper {
     @Mappings({
             @Mapping(target = "id", source = "id"),
 //            @Mapping(target = "name", source = "name"),
-            @Mapping(target = "dateAppointment", source = "dateAppointment"),
+//            @Mapping(target = "dateAppointment", source = "dateAppointment"),
             @Mapping(target = "details", source = "details"),
-            @Mapping(target = "student", source = "student"), // Mapear Users a UserDTO
+            @Mapping(target = "students", source = "students"),
             @Mapping(target = "typeOfAppointmentName", ignore = true) // Puedes agregarlo después si necesitas el nombre
     })
     AppointmentDTO toAppointmentDTO(Appointments appointment);
@@ -33,8 +33,8 @@ public interface CalendarAppointmentMapper {
     @Mappings({
             @Mapping(target = "name", source = "name"),
             @Mapping(target = "email", source = "email"),
-            @Mapping(target = "phone", source = "phone"),
-            @Mapping(target = "numberDocument", source = "numberDocument"),
+//            @Mapping(target = "phone", source = "phone"),
+//            @Mapping(target = "numberDocument", source = "numberDocument"),
             @Mapping(target = "nameProgram", ignore = true) // Agregar después si necesitas el nombre del programa
     })
     UserDTO toUserDTO(Users user);

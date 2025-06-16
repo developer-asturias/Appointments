@@ -186,41 +186,42 @@ public class AppointmentsService  implements CreateEntityUseCase, RetrieveEntity
     @Override
     public ResponseAppointmentDTO createAppointmentAndUser(AppointmentFormDTO formDTO) {
         // 1. Obtener o crear estudiante usando Optional
-        Students student = getStudentsByEmailAndDocumentNumber(
-                formDTO.getUserEmail(),
-                formDTO.getNumberDocument())
-                .map(existingStudent -> {
-                    log.info("Estudiante encontrado con ID: {}", existingStudent.getId());
-                    return existingStudent;
-                })
-                .orElseGet(() -> {
-                    log.info("No se encontró estudiante con email: {} y documento: {}. Creando nuevo estudiante.",
-                            formDTO.getUserEmail(), formDTO.getNumberDocument());
-                    Students newStudent = appointmentFormDtoMapper.mapToUsers(formDTO);
-                    Students createdStudent = createStudents(newStudent);
-                    log.info("Nuevo estudiante creado con ID: {}", createdStudent.getId());
-                    return createdStudent;
-                });
+//        Students student = getStudentsByEmailAndDocumentNumber(
+//                formDTO.getUserEmail(),
+//                formDTO.getNumberDocument())
+//                .map(existingStudent -> {
+//                    log.info("Estudiante encontrado con ID: {}", existingStudent.getId());
+//                    return existingStudent;
+//                })
+//                .orElseGet(() -> {
+//                    log.info("No se encontró estudiante con email: {} y documento: {}. Creando nuevo estudiante.",
+//                            formDTO.getUserEmail(), formDTO.getNumberDocument());
+//                    Students newStudent = appointmentFormDtoMapper.mapToUsers(formDTO);
+//                    Students createdStudent = createStudents(newStudent);
+//                    log.info("Nuevo estudiante creado con ID: {}", createdStudent.getId());
+//                    return createdStudent;
+//                });
+//
+//        // 2. Convertir el DTO en un objeto de dominio Appointments
+//        Appointments appointment = appointmentFormDtoMapper.mapToAppointments(formDTO);
+//
+//        // 3. Asignar el ID del estudiante al objeto de dominio Appointments
+//        appointment.setStudentId(student.getId());
+//
+//        // 4. Persistir la cita en la base de datos
+//        Appointments savedAppointment = createAppointments(appointment);
+//
+//        // 5. Crear y devolver el DTO de respuesta
+//        ResponseAppointmentDTO responseAppointmentDTO = new ResponseAppointmentDTO();
+//        responseAppointmentDTO.setNameStudent(student.getName());
+//        responseAppointmentDTO.setDate(savedAppointment.getDateAppointment());
+//        responseAppointmentDTO.setUserEmail(student.getEmail());
+//
+//        // enviar correo
+//        sendAppointmentConfirmation(student.getEmail(), responseAppointmentDTO);
 
-        // 2. Convertir el DTO en un objeto de dominio Appointments
-        Appointments appointment = appointmentFormDtoMapper.mapToAppointments(formDTO);
-
-        // 3. Asignar el ID del estudiante al objeto de dominio Appointments
-        appointment.setStudentId(student.getId());
-
-        // 4. Persistir la cita en la base de datos
-        Appointments savedAppointment = createAppointments(appointment);
-
-        // 5. Crear y devolver el DTO de respuesta
-        ResponseAppointmentDTO responseAppointmentDTO = new ResponseAppointmentDTO();
-        responseAppointmentDTO.setNameStudent(student.getName());
-        responseAppointmentDTO.setDate(savedAppointment.getDateAppointment());
-        responseAppointmentDTO.setUserEmail(student.getEmail());
-
-        // enviar correo
-        sendAppointmentConfirmation(student.getEmail(), responseAppointmentDTO);
-
-        return responseAppointmentDTO;
+//        return responseAppointmentDTO;
+        return null;
     }
 
 
@@ -241,15 +242,16 @@ public class AppointmentsService  implements CreateEntityUseCase, RetrieveEntity
                 .toList();
 
         // 4. Agrupar las citas por su estado y contar cuántas hay de cada uno
-        Map<StatusAppointment, Long> statuses = appointmentsModels.stream()
-                .collect(Collectors.groupingBy(Appointments::getStatus, Collectors.counting()));
+//        Map<StatusAppointment, Long> statuses = appointmentsModels.stream()
+//                .collect(Collectors.groupingBy(Appointments::getStatus, Collectors.counting()));
 
         // 5. Construir el DTO completo con la información obtenida
-        return calendarAppointmentMapper.toCalendarAppointmentDTO(
-                appointmentsModels.size(),
-                statuses,
-                appointmentDTOs
-        );
+//        return calendarAppointmentMapper.toCalendarAppointmentDTO(
+//                appointmentsModels.size(),
+//                statuses,
+//                appointmentDTOs
+//        );
+        return null;
     }
 
 

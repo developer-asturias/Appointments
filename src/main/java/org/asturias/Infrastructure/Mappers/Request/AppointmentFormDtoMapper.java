@@ -19,9 +19,9 @@ public interface AppointmentFormDtoMapper {
 
     // Mapear el DTO hacia el modelo Appointments
     @Mappings({
-                @Mapping(source = "date", target = "dateAppointment"),
-                @Mapping(source = "userId", target = "studentId"),
-                @Mapping(source = "typeOfAppointmentId", target = "typeOfAppointmentId"),
+//                @Mapping(source = "date", target = "dateAppointment"),
+//                @Mapping(source = "userId", target = "studentId"),
+//                @Mapping(source = "typeOfAppointmentId", target = "typeOfAppointmentId"),
                 @Mapping(source = "details", target = "details")
         })
     Appointments mapToAppointments(AppointmentFormDTO appointmentFormDTO);
@@ -31,7 +31,7 @@ public interface AppointmentFormDtoMapper {
                 @Mapping(source = "userName", target = "name"),
                 @Mapping(source = "userEmail", target = "email"),
                 @Mapping(source = "phone", target = "phone"),
-                @Mapping(source = "programId", target = "programId"),
+//                @Mapping(source = "programId", target = "programId"),
                 @Mapping(source = "numberDocument", target = "numberDocument")
         })
         Students mapToUsers(AppointmentFormDTO appointmentFormDTO);

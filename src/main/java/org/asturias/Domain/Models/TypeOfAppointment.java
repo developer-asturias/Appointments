@@ -1,11 +1,18 @@
 package org.asturias.Domain.Models;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.asturias.Infrastructure.Entities.ScheduleEntity;
+
+import java.util.List;
 
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class TypeOfAppointment {
 
     private Long id;
@@ -14,13 +21,5 @@ public class TypeOfAppointment {
 
     private String description;
 
-    public TypeOfAppointment(Long id, String name, String description) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-    }
-
-
-    public TypeOfAppointment() {
-    }
+    private List<ScheduleEntity> schedules;
 }

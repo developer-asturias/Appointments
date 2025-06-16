@@ -3,7 +3,9 @@ package org.asturias.Infrastructure.Entities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.asturias.Domain.Enums.StatusAppointment;
 import org.asturias.Infrastructure.Listener.AppointmentsEntityListener;
@@ -18,6 +20,9 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @Table(name = "Appointment")
+
+@AllArgsConstructor
+@NoArgsConstructor
 @EntityListeners(AppointmentsEntityListener.class)
 
 public class AppointmentsEntity {
@@ -26,21 +31,8 @@ public class AppointmentsEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "la fecha de la cita no deber ser nula")
-    @Column(name = "datetime_appointment", nullable = false)
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
-    private LocalDateTime dateAppointment;
-
-
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
-    private UsersEntity user;
-
-
-    @Column(name = "user_id")
-    private Long userId;
-
+    @Column(name = "details", nullable = false, length = 500)
+    private String details;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", insertable = false, updatable = false)
@@ -50,49 +42,66 @@ public class AppointmentsEntity {
     @Column(name = "student_id", nullable = false, updatable = false)
     private Long studentId;
 
-    @Enumerated(EnumType.STRING)
-    private StatusAppointment status;
+    @NotNull
+    @Column(name = "schedule_id", nullable = false)
+    private Long scheduleId;
 
-    @Column(name = "create_at", updatable = false)
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
-    @CreationTimestamp
-    private LocalDateTime createAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "schedule_id", insertable = false, updatable = false)
+    private ScheduleEntity schedule;
 
     @Column(name = "update_at")
     @UpdateTimestamp
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
     private LocalDateTime updateAt;
 
-    @Column(name = "date_remove")
-    private LocalDateTime dateRemove;
+    @Column(name = "create_at", updatable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
+    @CreationTimestamp
+    private LocalDateTime createAt;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "type_appointment_id", insertable = false, updatable = false)
-    private TypeOfAppointmentEntity typeOfAppointment;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mentor_id", insertable = false, updatable = false)
+    private UsersEntity mentors;
 
-    @Column(name = "type_appointment_id", nullable = false)
-    private Long typeOfAppointmentId;
+    @Column(name = "mentor_id")
+    private Long mentorId;
 
-    @Column(name = "details", nullable = false, length = 500)
-    private String Details;
+    @Lob
+    @Column(name = "mentor_notes")
+    private String mentorNotes;
 
 
-    public AppointmentsEntity(Long id, LocalDateTime dateAppointment, StudentsEntity students, Long studentId, StatusAppointment status, LocalDateTime createAt, LocalDateTime updateAt, LocalDateTime dateRemove, TypeOfAppointmentEntity typeOfAppointment, Long typeOfAppointmentId, String details) {
-        this.id = id;
-        this.dateAppointment = dateAppointment;
-        this.students = students;
-        this.studentId = studentId;
-        this.status = status;
-        this.createAt = createAt;
-        this.updateAt = updateAt;
-        this.dateRemove = dateRemove;
-        this.typeOfAppointment = typeOfAppointment;
-        this.typeOfAppointmentId = typeOfAppointmentId;
-        Details = details;
-    }
+    @NotNull(message = "El enlace de la reunión es obligatorio")
+    @Pattern(
+            regexp = "^https://teams\\.microsoft\\.com/.*$",
+            message = "La URL debe ser un enlace válido de Microsoft Teams"
+    )
+    @Column(name = "meeting_url", length = 500)
+    private String meetingUrl;
 
-    public AppointmentsEntity() {
-    }
+    @NotNull
+    @Column(name = "start_time", nullable = false, updatable = false)
+    private LocalDateTime startTime;
 
+    @NotNull
+    @Column(name = "end_time", nullable = false, updatable = false)
+    private LocalDateTime endTime;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status_id", nullable = false)
+    private StatusEntity status;
+
+    @Column(name = "status_id", insertable = false, updatable = false)
+    private Long statusId;
+
+    @Column(name = "mentor_joined_at")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
+    private LocalDateTime mentorJoinedAt;
+
+    @Column(name = "student_joined_at")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
+    private LocalDateTime studentJoinedAt;
 
 }

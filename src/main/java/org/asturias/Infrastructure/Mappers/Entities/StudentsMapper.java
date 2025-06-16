@@ -14,9 +14,15 @@ public interface StudentsMapper {
 
     @Mappings({
             @Mapping(source = "id", target = "id"),
+            @Mapping(source = "createAt", target = "createAt"),
+            @Mapping(source = "updateAt", target = "updateAt"),
             @Mapping(source = "name", target = "name"),
-            @Mapping(source = "email", target = "email"),
             @Mapping(source = "numberDocument", target = "numberDocument"),
+            @Mapping(source = "lastName", target = "lastName"),
+            @Mapping(source = "email", target = "email"),
+            @Mapping(source = "phone", target = "phone"),
+            @Mapping(source = "program", target = "program"),
+
     })
     Students STUDENTS(StudentsEntity students);
 
