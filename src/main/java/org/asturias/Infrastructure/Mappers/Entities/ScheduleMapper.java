@@ -4,15 +4,14 @@ import org.asturias.Domain.Models.Program;
 import org.asturias.Domain.Models.Schedule;
 import org.asturias.Infrastructure.Entities.ProgramEntity;
 import org.asturias.Infrastructure.Entities.ScheduleEntity;
-import org.mapstruct.InheritInverseConfiguration;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
+import org.mapstruct.*;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",
+        uses = {TypeAppointmentMapper.class})
 public interface ScheduleMapper {
+
 
     @Mappings({
             @Mapping(source = "id", target = "id"),
@@ -23,12 +22,12 @@ public interface ScheduleMapper {
             @Mapping(source = "typeOfAppointmentId", target = "typeOfAppointmentId"),
             @Mapping(source = "typeOfAppointment", target = "typeOfAppointment"),
             @Mapping(source = "capacity", target = "capacity")
-
     })
-    Schedule SCHEDULE(ScheduleEntity schedule);
-
-    List<Schedule> SCHEDULE_LIST(List<ScheduleEntity> scheduleEntities);
+    Schedule SCHEDULE(ScheduleEntity entity);
 
     @InheritInverseConfiguration
-    ScheduleEntity SCHEDULE_ENTITY(Schedule schedule);
+    ScheduleEntity SCHEDULE_ENTITY(Schedule model);
+
+    List<Schedule> SCHEDULE_LIST(List<ScheduleEntity> scheduleEntities);
 }
+

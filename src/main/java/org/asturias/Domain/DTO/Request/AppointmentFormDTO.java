@@ -5,13 +5,17 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.asturias.Infrastructure.Validation.AsturiasEmail;
 
 
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class AppointmentFormDTO {
 
     private Long userId;
@@ -44,24 +48,6 @@ public class AppointmentFormDTO {
     @Size(max = 200, message = "Los detalles no pueden superar los 200 caracteres.")
     private String details;
 
-    private Boolean dataTreatments;
-
-
-    public AppointmentFormDTO() {
-    }
-
-
-    public AppointmentFormDTO(Long userId, String userName, String userEmail, String phone, Long programId, String numberDocument, LocalDateTime date, Long typeOfAppointmentId, String details) {
-        this.userId = userId;
-        this.userName = userName;
-        this.userEmail = userEmail;
-        this.phone = phone;
-        this.programId = programId;
-        this.numberDocument = numberDocument;
-        this.date = date;
-        this.typeOfAppointmentId = typeOfAppointmentId;
-        this.details = details;
-    }
 
 
 }

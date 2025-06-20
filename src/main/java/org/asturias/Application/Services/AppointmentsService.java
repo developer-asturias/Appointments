@@ -25,8 +25,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 
-@Slf4j
-
 public class AppointmentsService  implements CreateEntityUseCase, RetrieveEntityUseCase, CreateAppointmentAndUser, UpdateEntityUseCase, SendEmailUseCase {
 
 

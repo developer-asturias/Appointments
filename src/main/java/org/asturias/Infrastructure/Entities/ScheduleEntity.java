@@ -14,7 +14,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "schedule")
+@Table(
+        name = "schedule",
+        uniqueConstraints = @UniqueConstraint(
+                columnNames = {"day_of_week", "start_time", "end_time", "type_of_appointment_id"}
+        )
+)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -40,17 +45,14 @@ public class ScheduleEntity {
     @Column(name = "start_time", nullable = false)
     private LocalTime startTime;
 
-
     @JsonFormat(pattern = "HH:mm")
     @Column(name = "end_time", nullable = false)
     private LocalTime endTime;
-
 
     @Column(name = "update_at")
     @UpdateTimestamp
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
     private LocalDateTime updateAt;
-
 
     @NotNull
     @Column(name = "type_of_appointment_id", nullable = false, updatable = false)
@@ -60,15 +62,21 @@ public class ScheduleEntity {
     @JoinColumn(name = "type_of_appointment_id", insertable = false, updatable = false)
     private TypeOfAppointmentEntity typeOfAppointment;
 
-
     @Column(name = "date_remove", updatable = true, insertable = false)
     private LocalDateTime dateRemove;
-
 
     @Min(value = 1, message = "El número mínimo de cupos debe ser 1")
     @Column(name = "capacity", nullable = false)
     private Integer capacity;
 
+
+    @PrePersist
+    @PreUpdate
+    private void validate() {
+        if (!startTime.isBefore(endTime)) {
+            throw new IllegalArgumentException("End time must be after start time");
+        }
+    }
 
 
 }

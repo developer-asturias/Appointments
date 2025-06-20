@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -33,15 +34,20 @@ public class JpaScheduleRepositoryAdapter  implements ScheduleRepositoryPort {
         return scheduleMapper.SCHEDULE(jpaScheduleRepository.save(scheduleEntity));
     }
 
+
+
     @Override
     public Optional<Schedule> update(Long id, Schedule schedule) {
-        if(jpaScheduleRepository.existsById(id)){
-            ScheduleEntity scheduleEntity = scheduleMapper.SCHEDULE_ENTITY(schedule);
-            ScheduleEntity scheduleUpdate = jpaScheduleRepository.save(scheduleEntity);
-            return Optional.of(scheduleMapper.SCHEDULE(scheduleUpdate));
-        }
-        return Optional.empty();
+        return jpaScheduleRepository.findById(id)
+                .map(existing -> {
+                    ScheduleEntity entity = scheduleMapper.SCHEDULE_ENTITY(schedule);
+                    entity.setId(id);
+                    ScheduleEntity updated = jpaScheduleRepository.save(entity);
+                    return Optional.of(scheduleMapper.SCHEDULE(updated));
+                })
+                .orElse(Optional.empty());
     }
+
 
     @Override
     public Optional<Schedule> findById(Long id) {
@@ -53,4 +59,16 @@ public class JpaScheduleRepositoryAdapter  implements ScheduleRepositoryPort {
         List<ScheduleEntity> scheduleEntity = jpaScheduleRepository.findAll();
         return scheduleMapper.SCHEDULE_LIST(scheduleEntity);
     }
+
+    @Override
+    public List<Schedule> findByDayAndType(int dayOfWeek, Long typeOfAppointmentId) {
+        return jpaScheduleRepository
+                .findByDayOfWeekAndTypeOfAppointmentId(dayOfWeek, typeOfAppointmentId)
+                .stream()
+                .map(scheduleMapper::SCHEDULE)
+                .collect(Collectors.toList());
+    }
+
+
+
 }

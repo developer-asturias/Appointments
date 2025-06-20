@@ -1,6 +1,7 @@
 package org.asturias.Application.UseCases;
 
 import org.asturias.Domain.DTO.Request.AppointmentFormDTO;
+import org.asturias.Domain.Exceptions.ScheduleConflictException;
 import org.asturias.Domain.Models.Appointments;
 import org.asturias.Domain.Models.Schedule;
 import org.asturias.Domain.Models.Students;
@@ -12,6 +13,8 @@ import org.asturias.Domain.Ports.Out.StudentsRepositoryPort;
 import org.asturias.Domain.Ports.Out.UsersRepositoryPort;
 import org.asturias.Infrastructure.Mappers.Request.AppointmentFormDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 public class CreateAppointmentsUseCaseImpl  implements CreateEntityUseCase {
 
@@ -46,9 +49,25 @@ public class CreateAppointmentsUseCaseImpl  implements CreateEntityUseCase {
         return studentsRepositoryPort.save(students);
     }
 
+
+
+
     @Override
-    public Schedule createSchedule(Schedule schedule) {
-        return scheduleRepositoryPort.save(schedule);
+    public Schedule createSchedule(Schedule newSchedule) {
+        List<Schedule> existingSchedules = scheduleRepositoryPort
+                .findByDayAndType(newSchedule.getDayOfWeek(), newSchedule.getTypeOfAppointmentId());
+
+        existingSchedules.forEach(existing -> {
+            if (newSchedule.isDuplicateOf(existing)) {
+                throw new ScheduleConflictException("Ya existe un horario idéntico para este tipo de cita");
+            }
+            if (newSchedule.conflictsWith(existing)) {
+                throw new ScheduleConflictException("El horario se traslapa con otro existente");
+            }
+        });
+
+        return scheduleRepositoryPort.save(newSchedule);
     }
+
 
 }

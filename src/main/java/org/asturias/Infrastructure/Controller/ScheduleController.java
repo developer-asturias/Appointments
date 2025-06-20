@@ -5,11 +5,13 @@ import jakarta.validation.Valid;
 import org.asturias.Application.Services.AppointmentsService;
 import org.asturias.Domain.Models.Schedule;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,17 +40,18 @@ public class ScheduleController {
 
 
     @GetMapping
-    public ResponseEntity<?> getAllSchedule(){
+    public ResponseEntity<?> getAllSchedule() {
         try {
-            List<Schedule>  scheduleList =  appointmentsService.FindAllSchedule();
-            return  new ResponseEntity<>(scheduleList, HttpStatus.OK);
-        }
-        catch (Exception e) {
+            List<Schedule> scheduleList = appointmentsService.FindAllSchedule();
+            return new ResponseEntity<>(scheduleList, HttpStatus.OK);
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al obtener todos los horarios: " + e.getMessage());
         }
-
-
     }
+
+
+
+
 
     @GetMapping("/get-by-id/{id}")
     public ResponseEntity<?> getScheduleById(@PathVariable Long id ){
@@ -76,13 +79,6 @@ public class ScheduleController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
-
-
-
-
-
-
-
 
 
 }

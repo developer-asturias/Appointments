@@ -10,7 +10,6 @@ import org.asturias.Domain.DTO.Response.CalendarAppointmentDTO;
 import org.asturias.Domain.DTO.Response.DetailsAppointmentDTO;
 import org.asturias.Domain.DTO.Response.ResponseAppointmentDTO;
 import org.asturias.Domain.Enums.StatusAppointment;
-import org.asturias.Domain.Models.*;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;

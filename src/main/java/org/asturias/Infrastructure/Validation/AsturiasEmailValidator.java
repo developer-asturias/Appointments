@@ -12,9 +12,9 @@ public class AsturiasEmailValidator implements ConstraintValidator<AsturiasEmail
     @Override
     public boolean isValid(String email, ConstraintValidatorContext context) {
         if (email == null || email.isEmpty()) {
-            return true; // La validación @NotBlank ya manejará esto
+            return true;
         }
-
         return email.matches("^[a-zA-Z0-9._%+-]+@asturias\\.edu\\.co$");
     }
+
 }
